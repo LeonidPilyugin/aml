@@ -1,0 +1,2 @@
+class AalException(Exception):
+    pass
