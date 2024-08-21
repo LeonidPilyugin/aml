@@ -10,6 +10,11 @@ namespace Aml
          */
         public abstract double get_volume();
 
+        /**
+         * Copies this object
+         * 
+         * @return Copy of this object
+         */
         public abstract Box copy();
     }
 

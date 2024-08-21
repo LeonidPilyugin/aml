@@ -28,6 +28,7 @@
         <hr class="navi_hr"/>
         <ul class="navi_main">
           <li class="creation_method"><a href="Aml.Atoms.Atoms.html">Atoms</a></li>
+          <li class="creation_method"><a href="Aml.Atoms.Atoms.empty.html">Atoms.empty</a></li>
           <li class="creation_method"><a href="Aml.Atoms.Atoms.sized.html">Atoms.sized</a></li>
           <li class="method"><a href="Aml.Atoms.copy.html">copy</a></li>
           <li class="method"><a href="Aml.Atoms.del_item.html">del_item</a></li>
@@ -59,6 +60,9 @@
 
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">class</span> <b><span class="class">Atoms</span></b> : <span class="main_type"><span class="class">Object</span></span>
+        </div>
+        <div class="description">
+          <p>Atoms object</p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Aml.html">Aml</a>
         </div>
@@ -71,76 +75,80 @@
             </span>
             <div class="leaf_brief_description">
             </div></li>
+          <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="Aml.Atoms.Atoms.empty.html" class="creation_method">Atoms.empty</a></b> ()
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Creates new empty object</span>
+            </div></li>
           <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="Aml.Atoms.Atoms.sized.html" class="creation_method">Atoms.sized</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> size)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates sized object</span>
             </div></li>
         </ul>
         <h3 class="main_title">Methods:</h3>
         <ul class="navi_inline">
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">Atoms</span></span> <b><a href="Aml.Atoms.copy.html" class="method">copy</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Copies this object</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.del_item.html" class="method">del_item</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Removes item by ID</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Aml.PerAtomProperty.html" class="abstract_class">PerAtomProperty</a></span> <b><a href="Aml.Atoms.get_item.html" class="method">get_item</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Returns copy of property by id</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint</span></span> <b><a href="Aml.Atoms.get_size.html" class="method">get_size</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Returns number of atoms</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> <b><a href="Aml.Atoms.get_val.html" class="method">get_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Returns copy of atom by index</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Aml.Atoms.has_item.html" class="method">has_item</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Returns true if contains property with id</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.insert_first.html" class="method">insert_first</a></b> (<span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> value) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.insert_first.html" class="method">insert_first</a></b> (<span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> atom) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Inserts atom to first position</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.insert_last.html" class="method">insert_last</a></b> (<span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> value) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.insert_last.html" class="method">insert_last</a></b> (<span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> atom) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Inserts atom to last position</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.insert_val.html" class="method">insert_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> value) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.insert_val.html" class="method">insert_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> atom) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Inserts atom to index</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">List</span></span>&lt;<span class="main_keyword">unowned</span> <span class="main_basic_type"><span class="class">string</span></span>&gt; <b><a href="Aml.Atoms.keys.html" class="method">keys</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Returns ids</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.remove_first.html" class="method">remove_first</a></b> () <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Removes first atom</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.remove_last.html" class="method">remove_last</a></b> () <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Removes last atom</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.remove_val.html" class="method">remove_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Removes atom by index</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.set_item.html" class="method">set_item</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id, <span class="main_keyword">owned</span> <span class="main_type"><a href="Aml.PerAtomProperty.html" class="abstract_class">PerAtomProperty</a></span> prop) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Sets property</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.set_size.html" class="method">set_size</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> n)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.set_size.html" class="method">set_size</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> size)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Sets number of atoms</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atoms.set_val.html" class="method">set_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> atom) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Sets atom by index</span>
             </div></li>
         </ul>
         <h3 class="main_title">Inherited Members:</h3>

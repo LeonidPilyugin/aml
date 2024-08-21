@@ -28,6 +28,7 @@
         <hr class="navi_hr"/>
         <ul class="navi_main">
           <li class="creation_method"><a href="Aml.Atoms.Atoms.html">Atoms</a></li>
+          <li class="creation_method"><a href="Aml.Atoms.Atoms.empty.html">Atoms.empty</a></li>
           <li class="creation_method"><a href="Aml.Atoms.Atoms.sized.html">Atoms.sized</a></li>
           <li class="method"><a href="Aml.Atoms.copy.html">copy</a></li>
           <li class="method"><a href="Aml.Atoms.del_item.html">del_item</a></li>
@@ -51,7 +52,40 @@
         <h1 class="main_title">insert_val</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">insert_val</span></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> value) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">insert_val</span></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_type"><a href="Aml.Atom.html" class="class">Atom</a></span> atom) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+        </div>
+        <div class="description">
+          <p>Inserts atom to index</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">index</td>
+              <td>
+                <p>Index </p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">atom</td>
+              <td>
+                <p>Atom to set </p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Exceptions:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">CollectionError.INDEX_ERROR</td>
+              <td>
+                <p>If got invalid index </p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">CollectionError.VALUE_ERROR</td>
+              <td>
+                <p>If got invalid atom </p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

@@ -1,33 +1,60 @@
 namespace Aml
 {
-    public class StringPerAtomProperty :
-        PerAtomProperty
+    /**
+     * String peratom property
+     */
+    public class StringPerAtomProperty : PerAtomProperty
     {
         private Array<string> array;
 
+        /**
+         * Creates from array
+         * 
+         * @param array Array to use
+         */
         public StringPerAtomProperty.create(owned string[] array)
         {
             this.set_arr(array);
         }
 
+        /**
+         * Creates new empty obejct
+         */
         public StringPerAtomProperty.empty()
         {
             this.array = new Array<string>();
         }
 
+        /**
+         * Returns copy of array
+         * 
+         * @return Copy of array
+         */
         public string[] get_arr()
         {
-            unowned string[] a = this.array.data;
+            unowned var a = this.array.data;
             return a.copy();
         }
 
+        /**
+         * Sets array
+         * 
+         * @param array Array to set
+         */
         public void set_arr(owned string[] array)
         {
             this.array = new Array<string>.take(array);
         }
 
-        public void set_val(uint index, owned string value)
-            throws CollectionError.INDEX_ERROR
+        /**
+         * Sets element by index
+         * 
+         * @param index Index
+         * @param value Value to set
+         * 
+         * @throws CollectionError.INDEX_ERROR If got invalid index
+         */
+        public void set_val(uint index, string value) throws CollectionError
         {
             if (index >= this.array.length)
                 throw new CollectionError.INDEX_ERROR("Index out of range");
@@ -35,16 +62,32 @@ namespace Aml
             this.array.remove_index(index + 1);
         }
 
-        public string get_val(uint index)
-            throws CollectionError.INDEX_ERROR
+        /**
+         * Returns element by index
+         * 
+         * @param index Index
+         * 
+         * @return Element by index
+         * 
+         * @throws CollectionError.INDEX_ERROR If got invalid index
+         */
+        public string get_val(uint index) throws CollectionError
         {
             if (index >= this.array.length)
                 throw new CollectionError.INDEX_ERROR("Index out of range");
             return this.array.index(index);
         }
 
-        public void insert_val(uint index, owned string value)
-            throws CollectionError
+        /**
+         * Inserts value to index
+         * 
+         * @param index Index
+         * @param value Value to insert
+         * 
+         * @throws CollectionError.SIZE_ERROR If new size is too big
+         * @throws CollectionError.INDEX_ERROR If index is out of range
+         */
+        public void insert_val(uint index, string value) throws CollectionError
         {
             if (this.get_size() == uint.MAX)
                 throw new CollectionError.SIZE_ERROR("Size out of range");
@@ -53,41 +96,38 @@ namespace Aml
             this.array.insert_val(index, value);
         }
 
-        public void insert_last(owned string value)
-            throws CollectionError
+        /**
+         * Inserts value to last position
+         * 
+         * @param value Value to insert
+         * 
+         * @throws CollectionError.SIZE_ERROR If new size is too big
+         */
+        public void insert_last(string value) throws CollectionError
         {
             this.insert_val(this.get_size(), value);
         }
 
-        public void insert_first(owned string value)
-            throws CollectionError
+        /**
+         * Inserts value to first position
+         * 
+         * @param value Value to insert
+         * 
+         * @throws CollectionError.SIZE_ERROR If new size is too big
+         * @throws CollectionError.INDEX_ERROR If index is out of range
+         */
+        public void insert_first(string value) throws CollectionError
         {
             this.insert_val(0, value);
         }
 
-        public override void remove_val(uint index)
-            throws CollectionError
+        public override void remove_val(uint index) throws CollectionError
         {
             if (index >= this.get_size())
                 throw new CollectionError.INDEX_ERROR("Index out of range");
             this.array.remove_index(index);
         }
 
-        public override void remove_first()
-            throws CollectionError
-        {
-            if (this.get_size() == 0)
-                throw new CollectionError.SIZE_ERROR("Empty");
-            this.remove_val(0);
-        }
-
-        public override void remove_last()
-            throws CollectionError
-        {
-            if (this.get_size() == 0)
-                throw new CollectionError.SIZE_ERROR("Empty");
-            this.remove_val(this.get_size() - 1);
-        }
         public override uint get_size()
         {
             return this.array.length;

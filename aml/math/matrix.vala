@@ -2,15 +2,15 @@ using Gsl;
 
 namespace Aml
 {
-    public errordomain MatrixError {
+    public errordomain MatrixError
+    {
         SIZE_ERROR,
     }
 
     /**
      * A simple wrap over [[https://valadoc.org/gsl/Gsl.Matrix.html|GSL Matrix]]
      */
-    public class Matrix :
-        Object
+    public class Matrix : Object
     {
         /**
          * Wrapped Gsl.Matrix
@@ -25,8 +25,7 @@ namespace Aml
          * 
          * @throws CollectionError.SIZE_ERROR if one of sizes is 0
          */
-        public Matrix.sized(uint rows, uint columns)
-            throws CollectionError.SIZE_ERROR
+        public Matrix.sized(uint rows, uint columns) throws CollectionError
         {
             if (rows == 0)
                 throw new CollectionError.SIZE_ERROR("Got zero rows");
@@ -42,8 +41,7 @@ namespace Aml
          * 
          * @throws CollectionError.SIZE_ERROR If one of dimensions of matrix is 0
          */
-        public Matrix.from_gsl(owned Gsl.Matrix matrix)
-            throws CollectionError.SIZE_ERROR
+        public Matrix.from_gsl(owned Gsl.Matrix matrix) throws CollectionError
         {
             if (matrix.size1 == 0 || matrix.size2 == 0)
                 throw new CollectionError.SIZE_ERROR("One of dimensions is zero");
@@ -60,8 +58,7 @@ namespace Aml
          * 
          * @throws CollectionError.SIZE_ERROR If array is invalid
          */
-        public Matrix.from_array(double[] array, uint rows)
-            throws CollectionError.SIZE_ERROR
+        public Matrix.from_array(double[] array, uint rows) throws CollectionError
         {
             if (rows == 0)
                 throw new CollectionError.SIZE_ERROR("Got zero rows");
@@ -74,16 +71,34 @@ namespace Aml
             this.set_arr(array);
         }
 
+        /**
+         * Number of rows
+         * 
+         * @return Number of rows
+         */
         public uint get_rows()
         {
             return (uint) this.matrix.size1;
         }
 
+        /**
+         * Number of columns
+         * 
+         * @return Number of columns
+         */
         public uint get_columns()
         {
             return (uint) this.matrix.size2;
         }
 
+        /**
+         * Returns element by row and column indeces
+         * 
+         * @param row Row index
+         * @param column Column index
+         * 
+         * @return Element by row and column indeces
+         */
         public double get_val(uint row, uint column)
             throws CollectionError.INDEX_ERROR
         {
@@ -94,6 +109,13 @@ namespace Aml
             return this.matrix.get(row, column);
         }
 
+        /**
+         * Sets element by row and column indeces
+         * 
+         * @param row Row index
+         * @param column Column index
+         * @param value Value to set
+         */
         public void set_val(uint row, uint column, double value)
             throws CollectionError.INDEX_ERROR
         {
@@ -104,6 +126,11 @@ namespace Aml
             this.matrix.set(row, column, value);
         }
 
+        /**
+         * Returns copy of GSL Matrix data
+         * 
+         * @return Copy of GSL Matrix data
+         */
         public double[] get_arr()
         {
             unowned double[] res = (double[]) this.matrix.data;
@@ -111,6 +138,11 @@ namespace Aml
             return res.copy();
         }
 
+        /**
+         * Copies array to GSL Matrix data
+         * 
+         * @param array Data to set
+         */
         public void set_arr(double[] array)
             throws CollectionError
         {
@@ -119,6 +151,11 @@ namespace Aml
             Memory.copy(this.matrix.data, (void*) array, sizeof(double) * array.length);
         }
 
+        /**
+         * Copies this object
+         * 
+         * @return Copy of this object
+         */
         public Matrix copy()
         {
             var result = new Matrix.sized(this.get_rows(), this.get_columns());

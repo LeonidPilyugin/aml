@@ -5,8 +5,7 @@ namespace Aml
     /**
      *  A simple wrap over [[https://valadoc.org/gsl/Gsl.Vector.html|GSL Vector]]
      */
-    public class Vector :
-        Object
+    public class Vector : Object
     {
         /**
          * Wrapped GSL Vector
@@ -20,8 +19,7 @@ namespace Aml
          * 
          * @throws CollectionError.SIZE_ERROR if size = 0
          */
-        public Vector.sized(uint size)
-            throws CollectionError.SIZE_ERROR
+        public Vector.sized(uint size) throws CollectionError
         {
             if (size == 0)
                 throw new CollectionError.SIZE_ERROR("Got zero size");
@@ -35,8 +33,7 @@ namespace Aml
          * 
          * @throws CollectionError.SIZE_ERROR if size of vector is 0
          */
-        public Vector.from_gsl(owned Gsl.Vector vector)
-            throws CollectionError.SIZE_ERROR
+        public Vector.from_gsl(owned Gsl.Vector vector) throws CollectionError
         {
             if (vector.size == 0)
                 throw new CollectionError.SIZE_ERROR("Got zero-sized vector");
@@ -52,21 +49,32 @@ namespace Aml
          * 
          * @throws CollectionError.SIZE_ERROR If array is empty
          */
-        public Vector.from_array(double[] array)
-            throws CollectionError.SIZE_ERROR
+        public Vector.from_array(double[] array) throws CollectionError
         {
             this.sized(array.length);
             this.set_arr(array);
         }
-
-        public double get_val(uint index)
-            throws CollectionError
+        
+        /**
+         * Returns element by index
+         * 
+         * @param index Index
+         * 
+         * @return Element by index
+         */
+        public double get_val(uint index) throws CollectionError
         {
             if (index >= this.get_size())
                 throw new CollectionError.INDEX_ERROR("Index is out of range");
             return this.vector.get(index);
         }
 
+        /**
+         * Sets element by index
+         * 
+         * @param index Index
+         * @param value Value to set
+         */
         public void set_val(uint index, double value)
             throws CollectionError
         {
@@ -75,6 +83,11 @@ namespace Aml
             this.vector.set(index, value);
         }
 
+        /**
+         * Returns copy of GSL Vector data
+         * 
+         * @return Copy of GSL Vector data
+         */
         public double[] get_arr()
         {
             unowned double[] res = (double[]) this.vector.data;
@@ -82,6 +95,11 @@ namespace Aml
             return res.copy();
         }
 
+        /**
+         * Copies array to GSL Vector data
+         * 
+         * @param array Data to set
+         */
         public void set_arr(double[] array)
             throws CollectionError
         {
@@ -90,6 +108,11 @@ namespace Aml
             Memory.copy(this.vector.data, (void*) array, sizeof(double) * array.length);
         }
 
+        /**
+         * Copies this object
+         * 
+         * @return Copy of this object
+         */
         public Vector copy()
         {
             Vector result = new Vector.sized(this.get_size());
@@ -97,6 +120,11 @@ namespace Aml
             return result;
         }
 
+        /**
+         * Returns size
+         * 
+         * @return Size
+         */
         public uint get_size()
         {
             return (uint) this.vector.size;

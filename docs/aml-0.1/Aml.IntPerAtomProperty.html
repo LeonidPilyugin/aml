@@ -37,8 +37,6 @@
           <li class="method"><a href="Aml.IntPerAtomProperty.insert_first.html">insert_first</a></li>
           <li class="method"><a href="Aml.IntPerAtomProperty.insert_last.html">insert_last</a></li>
           <li class="method"><a href="Aml.IntPerAtomProperty.insert_val.html">insert_val</a></li>
-          <li class="virtual_method"><a href="Aml.IntPerAtomProperty.remove_first.html">remove_first</a></li>
-          <li class="virtual_method"><a href="Aml.IntPerAtomProperty.remove_last.html">remove_last</a></li>
           <li class="virtual_method"><a href="Aml.IntPerAtomProperty.remove_val.html">remove_val</a></li>
           <li class="method"><a href="Aml.IntPerAtomProperty.set_arr.html">set_arr</a></li>
           <li class="virtual_method"><a href="Aml.IntPerAtomProperty.set_size.html">set_size</a></li>
@@ -61,6 +59,9 @@
 
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">class</span> <b><span class="class">IntPerAtomProperty</span></b> : <span class="main_type"><a href="Aml.PerAtomProperty.html" class="abstract_class">PerAtomProperty</a></span>
+        </div>
+        <div class="description">
+          <p>Int peratom property</p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Aml.html">Aml</a>
         </div>
@@ -75,11 +76,11 @@
             </div></li>
           <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="Aml.IntPerAtomProperty.IntPerAtomProperty.create.html" class="creation_method">IntPerAtomProperty.create</a></b> (<span class="main_keyword">owned</span> <span class="main_basic_type"><span class="struct">int</span></span>[] array)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates from array</span>
             </div></li>
           <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="Aml.IntPerAtomProperty.IntPerAtomProperty.empty.html" class="creation_method">IntPerAtomProperty.empty</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates new empty obejct</span>
             </div></li>
         </ul>
         <h3 class="main_title">Methods:</h3>
@@ -90,7 +91,7 @@
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">int</span></span>[] <b><a href="Aml.IntPerAtomProperty.get_arr.html" class="method">get_arr</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Returns copy of array</span>
             </div></li>
           <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_basic_type"><span class="struct">uint</span></span> <b><a href="Aml.IntPerAtomProperty.get_size.html" class="virtual_method">get_size</a></b> ()
             </span>
@@ -98,27 +99,19 @@
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Aml.IntPerAtomProperty.get_val.html" class="method">get_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Returns element by index</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.insert_first.html" class="method">insert_first</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> value) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Inserts value to first position</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.insert_last.html" class="method">insert_last</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> value) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Inserts value to last position</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.insert_val.html" class="method">insert_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_basic_type"><span class="struct">int</span></span> value) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.remove_first.html" class="virtual_method">remove_first</a></b> () <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
-            </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.remove_last.html" class="virtual_method">remove_last</a></b> () <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
-            </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Inserts value to index</span>
             </div></li>
           <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.remove_val.html" class="virtual_method">remove_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
@@ -126,7 +119,7 @@
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.set_arr.html" class="method">set_arr</a></b> (<span class="main_keyword">owned</span> <span class="main_basic_type"><span class="struct">int</span></span>[] array)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Sets array</span>
             </div></li>
           <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.set_size.html" class="virtual_method">set_size</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> size)
             </span>
@@ -134,7 +127,7 @@
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.IntPerAtomProperty.set_val.html" class="method">set_val</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_basic_type"><span class="struct">int</span></span> value) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Sets element by index</span>
             </div></li>
         </ul>
         <h3 class="main_title">Inherited Members:</h3>
@@ -149,8 +142,8 @@
             </div>
             <div class="column">
               <ul class="navi_inline">
-                <li class="abstract_method"><a href="Aml.PerAtomProperty.remove_first.html">remove_first</a></li>
-                <li class="abstract_method"><a href="Aml.PerAtomProperty.remove_last.html">remove_last</a></li>
+                <li class="virtual_method"><a href="Aml.PerAtomProperty.remove_first.html">remove_first</a></li>
+                <li class="virtual_method"><a href="Aml.PerAtomProperty.remove_last.html">remove_last</a></li>
               </ul>
             </div>
             <div class="column">

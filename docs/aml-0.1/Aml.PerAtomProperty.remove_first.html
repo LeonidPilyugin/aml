@@ -30,8 +30,8 @@
           <li class="creation_method"><a href="Aml.PerAtomProperty.PerAtomProperty.html">PerAtomProperty</a></li>
           <li class="abstract_method"><a href="Aml.PerAtomProperty.copy.html">copy</a></li>
           <li class="abstract_method"><a href="Aml.PerAtomProperty.get_size.html">get_size</a></li>
-          <li class="abstract_method">remove_first</li>
-          <li class="abstract_method"><a href="Aml.PerAtomProperty.remove_last.html">remove_last</a></li>
+          <li class="virtual_method">remove_first</li>
+          <li class="virtual_method"><a href="Aml.PerAtomProperty.remove_last.html">remove_last</a></li>
           <li class="abstract_method"><a href="Aml.PerAtomProperty.remove_val.html">remove_val</a></li>
           <li class="abstract_method"><a href="Aml.PerAtomProperty.set_size.html">set_size</a></li>
         </ul>
@@ -40,7 +40,25 @@
         <h1 class="main_title">remove_first</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">abstract</span> <span class="main_keyword">void</span> <b><span class="abstract_method">remove_first</span></b> () <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">virtual</span> <span class="main_keyword">void</span> <b><span class="virtual_method">remove_first</span></b> () <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+        </div>
+        <div class="description">
+          <p>Removes first value</p>
+          <h2 class="main_title">Exceptions:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">CollectionError.INDEX_ERROR</td>
+              <td>
+                <p>If got invalid index </p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">CollectionError.SIZE_ERROR</td>
+              <td>
+                <p>If empty </p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

@@ -3,8 +3,7 @@ namespace Aml
     /**
      * Single atom
      */
-    public class Atom :
-        Object
+    public class Atom : Object
     {
         private HashTable<string, Value?> data;
 
@@ -20,10 +19,11 @@ namespace Aml
          * 
          * @param id Id of property
          * 
-         * @return Copy of property if has it, instead null
+         * @return Copy of property
+         * 
+         * @throws CollectionError.KEY_ERROR If got invalid key
          */
-        public Value? get_item(string id)
-            throws CollectionError
+        public Value? get_item(string id) throws CollectionError
             ensures (
                 result.type() == typeof(int) ||
                 result.type() == typeof(double) ||
@@ -38,6 +38,11 @@ namespace Aml
             return copy;
         }
 
+        /**
+         * Returns true if contains item
+         * 
+         * @return True if contains atom
+         */
         public bool has_item(string id)
         {
             return this.data.contains(id);
@@ -85,6 +90,11 @@ namespace Aml
             return this.data.get_keys();
         }
 
+        /**
+         * Copies this object
+         * 
+         * @return Copy of this object
+         */
         public Atom copy() {
             var res = new Atom.empty();
             foreach (unowned var id in this.keys()) {

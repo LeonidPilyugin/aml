@@ -1,6 +1,10 @@
 namespace Aml
 {
-    public errordomain CollectionError {
+    /**
+     * Errors of collections
+     */
+    public errordomain CollectionError
+    {
         INDEX_ERROR,
         SIZE_ERROR,
         KEY_ERROR,
