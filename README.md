@@ -1,2 +1,2 @@
-# aal
-Atom analysis library
+# aml
+Atom Manipulation Library
