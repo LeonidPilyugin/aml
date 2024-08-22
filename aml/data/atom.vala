@@ -10,7 +10,8 @@ namespace Aml
         /**
          * Creates new empty atom
          */
-        public Atom.empty() {
+        public Atom.empty()
+        {
             this.data = new HashTable<string, Value?>(str_hash, str_equal);
         }
 
@@ -23,7 +24,7 @@ namespace Aml
          * 
          * @throws CollectionError.KEY_ERROR If got invalid key
          */
-        public Value? get_item(string id) throws CollectionError
+        public Value? get_prop(string id) throws CollectionError
             ensures (
                 result.type() == typeof(int) ||
                 result.type() == typeof(double) ||
@@ -31,7 +32,7 @@ namespace Aml
             )
         {
             if (!this.data.contains(id))
-                throw new CollectionError.KEY_ERROR("No such item");
+                throw new CollectionError.KEY_ERROR("No such property");
             Value temp = this.data.get(id);
             Value copy = Value(temp.type());
             temp.copy(ref copy);
@@ -39,11 +40,11 @@ namespace Aml
         }
 
         /**
-         * Returns true if contains item
+         * Returns true if contains property
          * 
          * @return True if contains atom
          */
-        public bool has_item(string id)
+        public bool has_prop(string id)
         {
             return this.data.contains(id);
         }
@@ -56,7 +57,7 @@ namespace Aml
          * 
          * @throws CollectionError.TYPE_ERROR If type is not supported
          */
-        public void set_item(string id, owned Value? prop) throws CollectionError
+        public void set_prop(string id, owned Value? prop) throws CollectionError
         {
             if (!(
                 prop == null ||
@@ -74,9 +75,9 @@ namespace Aml
          * 
          * @throws CollectionError.KEY_ERROR If doesn't have this id
          */
-        public void del_item(string id) throws CollectionError
+        public void del_prop(string id) throws CollectionError
         {
-            if (this.get_item(id) == null)
+            if (!this.has_prop(id))
                 throw new CollectionError.KEY_ERROR("Invalid property id");
             this.data.remove(id);
         }
@@ -86,7 +87,8 @@ namespace Aml
          * 
          * @return Ids of contained properties
          */
-        public List<weak string> keys() {
+        public List<weak string> get_ids()
+        {
             return this.data.get_keys();
         }
 
@@ -97,8 +99,9 @@ namespace Aml
          */
         public Atom copy() {
             var res = new Atom.empty();
-            foreach (unowned var id in this.keys()) {
-                res.set_item(id, this.get_item(id));
+            foreach (unowned var id in this.get_ids())
+            {
+                res.set_prop(id, this.get_prop(id));
             }
             return res;
         }

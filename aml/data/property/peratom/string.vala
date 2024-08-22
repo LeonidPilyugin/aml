@@ -12,7 +12,7 @@ namespace Aml
          * 
          * @param array Array to use
          */
-        public StringPerAtomProperty.create(owned string[] array)
+        public StringPerAtomProperty.from_array(owned string[] array)
         {
             this.set_arr(array);
         }
@@ -140,7 +140,7 @@ namespace Aml
 
         public override PerAtomProperty copy()
         {
-            return new StringPerAtomProperty.create(this.get_arr());
+            return new StringPerAtomProperty.from_array(this.get_arr());
         }
     }
 }

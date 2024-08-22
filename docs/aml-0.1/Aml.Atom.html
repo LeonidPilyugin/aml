@@ -30,11 +30,11 @@
           <li class="creation_method"><a href="Aml.Atom.Atom.html">Atom</a></li>
           <li class="creation_method"><a href="Aml.Atom.Atom.empty.html">Atom.empty</a></li>
           <li class="method"><a href="Aml.Atom.copy.html">copy</a></li>
-          <li class="method"><a href="Aml.Atom.del_item.html">del_item</a></li>
-          <li class="method"><a href="Aml.Atom.get_item.html">get_item</a></li>
-          <li class="method"><a href="Aml.Atom.has_item.html">has_item</a></li>
-          <li class="method"><a href="Aml.Atom.keys.html">keys</a></li>
-          <li class="method"><a href="Aml.Atom.set_item.html">set_item</a></li>
+          <li class="method"><a href="Aml.Atom.del_prop.html">del_prop</a></li>
+          <li class="method"><a href="Aml.Atom.get_ids.html">get_ids</a></li>
+          <li class="method"><a href="Aml.Atom.get_prop.html">get_prop</a></li>
+          <li class="method"><a href="Aml.Atom.has_prop.html">has_prop</a></li>
+          <li class="method"><a href="Aml.Atom.set_prop.html">set_prop</a></li>
         </ul>
       </div>
       <div class="site_content">
@@ -75,23 +75,23 @@
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Copies this object</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atom.del_item.html" class="method">del_item</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atom.del_prop.html" class="method">del_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Deletes property by id</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="struct">Value</span></span>? <b><a href="Aml.Atom.get_item.html" class="method">get_item</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
-            </span>
-            <div class="leaf_brief_description"><span class="brief_description">Returns property by id</span>
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Aml.Atom.has_item.html" class="method">has_item</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id)
-            </span>
-            <div class="leaf_brief_description"><span class="brief_description">Returns true if contains item</span>
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">List</span></span>&lt;<span class="main_keyword">unowned</span> <span class="main_basic_type"><span class="class">string</span></span>&gt; <b><a href="Aml.Atom.keys.html" class="method">keys</a></b> ()
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">List</span></span>&lt;<span class="main_keyword">unowned</span> <span class="main_basic_type"><span class="class">string</span></span>&gt; <b><a href="Aml.Atom.get_ids.html" class="method">get_ids</a></b> ()
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Returns all ids of contained properties</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atom.set_item.html" class="method">set_item</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id, <span class="main_keyword">owned</span> <span class="main_type"><span class="struct">Value</span></span>? prop) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="struct">Value</span></span>? <b><a href="Aml.Atom.get_prop.html" class="method">get_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Returns property by id</span>
+            </div></li>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Aml.Atom.has_prop.html" class="method">has_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id)
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Returns true if contains property</span>
+            </div></li>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Aml.Atom.set_prop.html" class="method">set_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id, <span class="main_keyword">owned</span> <span class="main_type"><span class="struct">Value</span></span>? prop) <span class="main_keyword">throws</span> <span class="main_type"><a href="Aml.CollectionError.html" class="errordomain">CollectionError</a></span>
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Sets property by id</span>
             </div></li>
