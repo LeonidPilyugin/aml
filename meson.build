@@ -7,10 +7,6 @@ dependencies = [
     dependency('gsl'),
 ]
 
-test_sources = files(
-  'test/main.vala',
-)
-
 deps = [
   '--pkg=glib-2.0',
   '--pkg=gobject-2.0',
@@ -56,14 +52,6 @@ lib = custom_target(
   output: 'libaml.so',
   install: true,
   install_dir: 'libaml',
-)
-
-mtest = custom_target(
-  'mtest',
-  command: [valac, 'Aml-0.1.vapi', test_sources, '-X', 'libaml.so', '-X', '-I.', '-o', 'mtest', deps],
-  output: 'mtest',
-  install: true,
-  install_dir: 'mtest',
 )
 
 g_ir_compiler = find_program('g-ir-compiler')

@@ -5,6 +5,8 @@ namespace Aml
 
     public class LammpsTextDumpParser : Parser
     {
+        public LammpsTextDumpParser.create() { }
+
         public override void compose_frame(Frame frame, DataOutputStream output) throws IOError, ParserError
         {
             if (!(frame.box is ParallelepipedBox))
