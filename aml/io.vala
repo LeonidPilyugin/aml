@@ -54,7 +54,7 @@ namespace Aml
          */
         public void dump_frames(List<Frame> frames, string path) throws Error
         {
-            var dis = new DataOutputStream(File.new_for_path(path).create_readwrite(FileCreateFlags.PRIVATE).output_stream);
+            var dis = new DataOutputStream(File.new_for_path(path).replace_readwrite(null, false, FileCreateFlags.PRIVATE).output_stream);
             this.parser.compose_frames(frames, dis);
         }
 
@@ -66,7 +66,7 @@ namespace Aml
          */
         public void dump_frame(Frame frame, string path) throws Error
         {
-            var dis = new DataOutputStream(File.new_for_path(path).create_readwrite(FileCreateFlags.PRIVATE).output_stream);
+            var dis = new DataOutputStream(File.new_for_path(path).replace_readwrite(null, false, FileCreateFlags.PRIVATE).output_stream);
             this.parser.compose_frame(frame, dis);
         }
     }
