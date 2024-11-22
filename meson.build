@@ -62,12 +62,15 @@ custom_target('aml typelib', command: [g_ir_compiler, '--shared-library', lib.fu
               install_dir: join_paths(get_option('libdir'), 'girepository-1.0'))
 
 valadoc = find_program('valadoc')
-doc_dir = 'aml-0.1'
-custom_target(
-  'doc',
-  command: [valadoc, '--force', '-o', doc_dir, deps, sources],
-  output: 'index.html',
-  depends: lib,
-  install: true,
-  install_dir: doc_dir
-)
+
+if valadoc.found()
+  doc_dir = 'aml-0.1'
+  custom_target(
+    'doc',
+    command: [valadoc, '--force', '-o', doc_dir, deps, sources],
+    output: 'index.html',
+    depends: lib,
+    install: true,
+    install_dir: doc_dir
+  )
+endif
