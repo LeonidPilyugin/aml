@@ -1,8 +1,5 @@
 namespace Aml
 {
-    [CCode (has_target = false)]
-    delegate string AddString(PerAtomProperty p, uint i);
-
     public class LammpsTextDumpParser : Parser
     {
         public LammpsTextDumpParser.create() { }
@@ -23,11 +20,11 @@ namespace Aml
             if (frame.has_prop("timestep"))
             {
                 output.put_string("ITEM: TIMESTEP\n");
-                output.put_string("%u\n".printf(frame.get_prop("timestep").data.get_uint()));
+                output.put_string(frame.get_prop("timestep").data.get_uint64().to_string() + "\n");
             }
             // write number of atoms
             output.put_string("ITEM: NUMBER OF ATOMS\n");
-            output.put_string("%u\n".printf(frame.atoms.get_size()));
+            output.put_string(frame.atoms.get_size().to_string() + "\n");
             // write box
             var edge = box.get_edge();
             var origin = box.get_origin();
@@ -57,27 +54,12 @@ namespace Aml
             }
             // write atoms
             var ids = frame.atoms.get_ids();
-            var props = new Array<PerAtomProperty>();
-            var funcs = new AddString[ids.length()];
-            PerAtomProperty temp_prop;
+            var props = new Array<StringPerAtomProperty>();
             output.put_string("ITEM: ATOMS ");
             uint k = 0;
             foreach (unowned var id in ids)
             {
-                temp_prop = frame.atoms.get_prop(id);
-                props.append_val(temp_prop);
-
-                if (temp_prop is IntPerAtomProperty)
-                {
-                    funcs[k++] = (p, i) => "%d ".printf(((IntPerAtomProperty) p).get_val(i));
-                } else if (temp_prop is DoublePerAtomProperty)
-                {
-                    funcs[k++] = (p, i) => "%lf ".printf(((DoublePerAtomProperty) p).get_val(i));
-                } else
-                {
-                    funcs[k++] = (p, i) => "%s ".printf(((StringPerAtomProperty) p).get_val(i));
-                }
-                
+                props.append_val(StringPerAtomProperty.create_from(frame.atoms.get_prop(id)));
                 output.put_string("%s ".printf(id));
             }
             output.put_string("\n");
@@ -86,7 +68,7 @@ namespace Aml
             {
                 for (uint j = 0; j < ids.length(); j++)
                 {
-                    output.put_string(funcs[j](props.index(j), i));
+                    output.put_string(props.index(j).get_val(i));
                 }
                 output.put_string("\n");
             }
@@ -119,12 +101,12 @@ namespace Aml
 
                     if (input.read_line() == null) break;
 
-                    uint timestep;
-                    if (!uint.try_parse(input.line, out timestep))
+                    uint64 timestep;
+                    if (!uint64.try_parse(input.line, out timestep))
                         throw new ParserError.PARSE_ERROR("Line %u: invalid timestep value".printf(input.line_n));
 
-                    var val = Value(typeof(uint));
-                    val.set_uint(timestep);
+                    var val = Value(typeof(uint64));
+                    val.set_uint64(timestep);
                     properties.insert("timestep", new FrameProperty.create(val));
                 } else if (input.line == "ITEM: TIME")
                 {
@@ -309,25 +291,12 @@ namespace Aml
                     // load first properties
                     if (input.read_line() == null) break;
 
-                    PerAtomProperty[] props = new PerAtomProperty[keys.length];
+                    StringPerAtomProperty[] props = new StringPerAtomProperty[keys.length];
                     temp_split = input.line.split_set(" \t");
-                    double temp_double;
-                    int temp_int;
                     for (uint i = 0; i < keys.length; i++)
                     {
-                        if (int.try_parse(temp_split[i], out temp_int))
-                        {
-                            props[i] = new IntPerAtomProperty.empty();
-                            ((IntPerAtomProperty) props[i]).insert_last(temp_int);
-                        } else if (double.try_parse(temp_split[i], out temp_double))
-                        {
-                            props[i] = new DoublePerAtomProperty.empty();
-                            ((DoublePerAtomProperty) props[i]).insert_last(temp_double);
-                        } else
-                        {
-                            props[i] = new StringPerAtomProperty.empty();
-                            ((StringPerAtomProperty) props[i]).insert_last(temp_split[i]);
-                        }
+                        props[i] = new StringPerAtomProperty.empty();
+                        props[i].insert_last(temp_split[i]);
                     }
 
                     // load other properties
@@ -339,20 +308,7 @@ namespace Aml
                             throw new ParserError.PARSE_ERROR("Line %u: invalid property number".printf(input.line_n));
                         for (uint j = 0; j < keys.length; j++)
                         {
-                            if (props[j] is DoublePerAtomProperty)
-                            {
-                                if (!double.try_parse(temp_split[j], out temp_double))
-                                    throw new ParserError.PARSE_ERROR("Line %u: invalid type".printf(input.line_n));
-                                ((DoublePerAtomProperty) props[j]).insert_last(temp_double);
-                            } else if (props[j] is IntPerAtomProperty)
-                            {
-                                if (!int.try_parse(temp_split[j], out temp_int))
-                                    throw new ParserError.PARSE_ERROR("Line %u: invalid type".printf(input.line_n));
-                                ((IntPerAtomProperty) props[j]).insert_last(temp_int);
-                            } else
-                            {
-                                ((StringPerAtomProperty) props[j]).insert_last(temp_split[j]);
-                            }
+                            props[j].insert_last(temp_split[j]);
                         }
                     } if (!ok) break;
 

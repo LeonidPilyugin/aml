@@ -128,25 +128,13 @@ namespace Aml
         public Atom get_val(uint index) throws CollectionError
         {
             Atom result = new Atom.empty();
-            Value temp;
+            Variant temp;
             unowned PerAtomProperty temp_prop;
 
             foreach (unowned var prop_id in this.get_ids())
             {
                 temp_prop = this.properties.get(prop_id);
-                if (temp_prop is IntPerAtomProperty)
-                {
-                    temp = Value(typeof(int));
-                    temp.set_int(((IntPerAtomProperty) temp_prop).get_val(index));
-                } else if (temp_prop is DoublePerAtomProperty)
-                {
-                    temp = Value(typeof(double));
-                    temp.set_double(((DoublePerAtomProperty) temp_prop).get_val(index));
-                } else
-                {
-                    temp = Value(typeof(string));
-                    temp.set_string(((StringPerAtomProperty) temp_prop).get_val(index));
-                }
+                temp = temp_prop.get_val_variant(index);
                 result.set_prop(prop_id, temp);
             }
 
@@ -186,19 +174,13 @@ namespace Aml
             foreach (unowned var k in keys)
                 if (val_keys.index(k) == -1)
                     throw new CollectionError.VALUE_ERROR("Invalid value");
-            Value temp_val;
+            Variant temp_variant;
             unowned PerAtomProperty temp_prop;
             foreach (unowned var k in val_keys)
             {
-                temp_val = atom.get_prop(k);
+                temp_variant = atom.get_prop(k);
                 temp_prop = this.properties.get(k);
-
-                if (temp_prop is IntPerAtomProperty)
-                    ((IntPerAtomProperty) temp_prop).insert_val(index, (int) temp_val);
-                else if (temp_prop is DoublePerAtomProperty)
-                    ((DoublePerAtomProperty) temp_prop).insert_val(index, (double) temp_val);
-                else
-                    ((StringPerAtomProperty) temp_prop).insert_val(index, (string) temp_val);
+                temp_prop.insert_val_variant(index, temp_variant);
             }
             this.size++;
         }

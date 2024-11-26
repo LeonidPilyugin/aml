@@ -5,14 +5,14 @@ namespace Aml
      */
     public class Atom : Object
     {
-        private HashTable<string, Value?> data;
+        private HashTable<string, Variant> data;
 
         /**
          * Creates new empty atom
          */
         public Atom.empty()
         {
-            this.data = new HashTable<string, Value?>(str_hash, str_equal);
+            this.data = new HashTable<string, Variant>(str_hash, str_equal);
         }
 
         /**
@@ -24,19 +24,16 @@ namespace Aml
          * 
          * @throws CollectionError.KEY_ERROR If got invalid key
          */
-        public Value? get_prop(string id) throws CollectionError
-            ensures (
-                result.type() == typeof(int) ||
+        public Variant get_prop(string id) throws CollectionError
+            /*ensures (
+                result.type() == typeof(int32) ||
                 result.type() == typeof(double) ||
                 result.type() == typeof(string)
-            )
+            )*/
         {
             if (!this.data.contains(id))
                 throw new CollectionError.KEY_ERROR("No such property");
-            Value temp = this.data.get(id);
-            Value copy = Value(temp.type());
-            temp.copy(ref copy);
-            return copy;
+            return this.data.get(id);
         }
 
         /**
@@ -57,14 +54,14 @@ namespace Aml
          * 
          * @throws CollectionError.TYPE_ERROR If type is not supported
          */
-        public void set_prop(string id, owned Value? prop) throws CollectionError
+        public void set_prop(string id, owned Variant prop) throws CollectionError
         {
-            if (!(
+            /*if (!(
                 prop == null ||
-                prop.type() == typeof(int) ||
+                prop.type() == typeof(int32) ||
                 prop.type() == typeof(double) ||
                 prop.type() == typeof(string)
-            )) throw new CollectionError.TYPE_ERROR("Invalid value type. Expected int, double or string");
+            )) throw new CollectionError.TYPE_ERROR("Invalid value type. Expected int32, double or string");*/
             this.data.set(id, prop);
         }
 

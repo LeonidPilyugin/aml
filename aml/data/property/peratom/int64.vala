@@ -1,18 +1,18 @@
 namespace Aml
 {
     /**
-     * String peratom property
+     * Int peratom property
      */
-    public class StringPerAtomProperty : PerAtomProperty
+    public class Int64PerAtomProperty : PerAtomProperty
     {
-        private Array<string> array;
+        private Array<int64> array;
 
         /**
          * Creates from array
          * 
          * @param array Array to use
          */
-        public StringPerAtomProperty.from_array(owned string[] array)
+        public Int64PerAtomProperty.from_array(owned int64[] array)
         {
             this.set_arr(array);
         }
@@ -20,9 +20,9 @@ namespace Aml
         /**
          * Creates new empty obejct
          */
-        public StringPerAtomProperty.empty()
+        public Int64PerAtomProperty.empty()
         {
-            this.array = new Array<string>();
+            this.array = new Array<int64>();
         }
 
         /**
@@ -30,7 +30,7 @@ namespace Aml
          * 
          * @return Copy of array
          */
-        public string[] get_arr()
+        public int64[] get_arr()
         {
             unowned var a = this.array.data;
             return a.copy();
@@ -41,9 +41,9 @@ namespace Aml
          * 
          * @param array Array to set
          */
-        public void set_arr(owned string[] array)
+        public void set_arr(owned int64[] array)
         {
-            this.array = new Array<string>.take(array);
+            this.array = new Array<int64>.take(array);
         }
 
         /**
@@ -54,7 +54,7 @@ namespace Aml
          * 
          * @throws CollectionError.INDEX_ERROR If got invalid index
          */
-        public void set_val(uint index, string value) throws CollectionError
+        public void set_val(uint index, int64 value) throws CollectionError
         {
             if (index >= this.array.length)
                 throw new CollectionError.INDEX_ERROR("Index out of range");
@@ -71,7 +71,7 @@ namespace Aml
          * 
          * @throws CollectionError.INDEX_ERROR If got invalid index
          */
-        public string get_val(uint index) throws CollectionError
+        public int64 get_val(uint index) throws CollectionError
         {
             if (index >= this.array.length)
                 throw new CollectionError.INDEX_ERROR("Index out of range");
@@ -87,7 +87,7 @@ namespace Aml
          * @throws CollectionError.SIZE_ERROR If new size is too big
          * @throws CollectionError.INDEX_ERROR If index is out of range
          */
-        public void insert_val(uint index, string value) throws CollectionError
+        public void insert_val(uint index, int64 value) throws CollectionError
         {
             if (this.get_size() == uint.MAX)
                 throw new CollectionError.SIZE_ERROR("Size out of range");
@@ -103,7 +103,7 @@ namespace Aml
          * 
          * @throws CollectionError.SIZE_ERROR If new size is too big
          */
-        public void insert_last(string value) throws CollectionError
+        public void insert_last(int64 value) throws CollectionError
         {
             this.insert_val(this.get_size(), value);
         }
@@ -116,14 +116,14 @@ namespace Aml
          * @throws CollectionError.SIZE_ERROR If new size is too big
          * @throws CollectionError.INDEX_ERROR If index is out of range
          */
-        public void insert_first(string value) throws CollectionError
+        public void insert_first(int64 value) throws CollectionError
         {
             this.insert_val(0, value);
         }
 
         public override Variant get_val_variant(uint index)
         {
-            return new Variant.string(this.get_val(index));
+            return new Variant.int64(this.get_val(index));
         }
 
         public override void set_val_variant(uint index, Variant v)
@@ -132,9 +132,9 @@ namespace Aml
                 throw new CollectionError.SIZE_ERROR("Size out of range");
             if (index > this.get_size())
                 throw new CollectionError.INDEX_ERROR("Index out of range");
-            if (v.classify() != Variant.Class.STRING)
-                throw new PerAtomPropertyError.TYPE_ERROR("Value must hold string");
-            var temp = v.get_string();
+            if (v.classify() != Variant.Class.INT64)
+                throw new PerAtomPropertyError.TYPE_ERROR("Value must hold int64");
+            var temp = v.get_int64();
             this.array.insert_val(index, temp);
             this.array.remove_index(index + 1);
         }
@@ -145,9 +145,9 @@ namespace Aml
                 throw new CollectionError.SIZE_ERROR("Size out of range");
             if (index > this.get_size())
                 throw new CollectionError.INDEX_ERROR("Index out of range");
-            if (v.classify() != Variant.Class.STRING)
-                throw new PerAtomPropertyError.TYPE_ERROR("Value must hold string");
-            var temp = v.get_string();
+            if (v.classify() != Variant.Class.INT64)
+                throw new PerAtomPropertyError.TYPE_ERROR("Value must hold int64");
+            var temp = v.get_int64();
             this.array.insert_val(index, temp);
         }
 
@@ -170,39 +170,38 @@ namespace Aml
 
         public override PerAtomProperty copy()
         {
-            return new StringPerAtomProperty.from_array(this.get_arr());
+            return new Int64PerAtomProperty.from_array(this.get_arr());
         }
 
-        public static StringPerAtomProperty create_from(PerAtomProperty prop) {
-            string[] arr = new string[prop.get_size()];
+        public static Int64PerAtomProperty create_from(PerAtomProperty prop) {
+            int64[] arr = new int64[prop.get_size()];
 
             if (prop is StringPerAtomProperty) {
                 StringPerAtomProperty temp_prop = (StringPerAtomProperty) prop;
-                arr = temp_prop.get_arr();
+                for (uint i = 0; i < arr.length; i++) {
+                    if (!int64.try_parse(temp_prop.get_val(i), out arr[i])) throw new PerAtomPropertyError.TYPE_ERROR("");
+                }
             } else if (prop is Int64PerAtomProperty) {
                 Int64PerAtomProperty temp_prop = (Int64PerAtomProperty) prop;
-                int64 temp;
-                for (uint i = 0; i < arr.length; i++) {
-                    temp = temp_prop.get_val(i);
-                    arr[i] = temp.to_string();
-                }
+                arr = temp_prop.get_arr();
             } else if (prop is Float64PerAtomProperty) {
                 Float64PerAtomProperty temp_prop = (Float64PerAtomProperty) prop;
                 double temp;
                 for (uint i = 0; i < arr.length; i++) {
                     temp = temp_prop.get_val(i);
-                    arr[i] = temp.to_string();
+                    if (temp > int64.MAX || temp < int64.MIN) throw new PerAtomPropertyError.TYPE_ERROR("");
+                    arr[i] = (int64) temp;
                 }
             } else if (prop is BoolPerAtomProperty) {
                 BoolPerAtomProperty temp_prop = (BoolPerAtomProperty) prop;
                 for (uint i = 0; i < arr.length; i++) {
-                    arr[i] = temp_prop.get_val(i) ? "true" : "false";
+                    arr[i] = temp_prop.get_val(i) ? 1 : 0;
                 }
             } else {
                 throw new PerAtomPropertyError.TYPE_ERROR("");
             }
 
-            return new StringPerAtomProperty.from_array(arr);
+            return new Int64PerAtomProperty.from_array(arr);
         }
     }
 }

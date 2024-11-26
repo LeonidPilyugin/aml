@@ -28,10 +28,11 @@ sources = files(
   'aml/data/frame.vala',
 
   'aml/data/property/property.vala',
-  'aml/data/property/frameproperty.vala',
+  'aml/data/property/frame/frameproperty.vala',
   'aml/data/property/peratom/peratom.vala',
-  'aml/data/property/peratom/double.vala',
-  'aml/data/property/peratom/int.vala',
+  'aml/data/property/peratom/bool.vala',
+  'aml/data/property/peratom/float64.vala',
+  'aml/data/property/peratom/int64.vala',
   'aml/data/property/peratom/string.vala',
 
   'aml/math/vector.vala',
