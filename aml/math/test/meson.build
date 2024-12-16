@@ -1,5 +1,8 @@
 tests = { }
 
+subdir('matrix')
+subdir('vector')
+
 foreach name, sources : tests
     test(
         module_dict['module_name'] + name,
@@ -16,6 +19,7 @@ foreach name, sources : tests
                 '--output=' + name,
                 '-X', '-static-libasan',
                 '-X', '-I' + module_dict['build_dir'],
+                '-X', '-I' + modules['core']['build_dir'],
                 '-X', '-w',
                 module_dict['link_args'],
                 modules['core']['link_args'],
