@@ -27,7 +27,8 @@ foreach name, sources : tests
             ],
             output: name,
             depends: module_dict['lib_target'],
-        )
+        ),
+      env: [ 'G_DEBUG=fatal_warnings' ]
     )
 endforeach
 

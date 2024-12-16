@@ -10,9 +10,6 @@ public static int main(string[] args)
     try {
         c.set_element("el", a);
         assert_not_reached();
-    } catch (DataCollectionError.SELF_SET_ERROR e) {
-        return 0;
-    }
-    assert_not_reached();
-    return 1;
+    } catch (DataCollectionError.SELF_SET_ERROR e) { }
+    return 0;
 }

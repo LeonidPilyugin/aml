@@ -18,7 +18,7 @@ namespace AmlMath
         /**
          * Wrapped GSL Vector
          */
-        public Gsl.Vector vector { get; private owned set; } 
+        private Gsl.Vector vector; 
 
         /**
          * Creates sized Vector

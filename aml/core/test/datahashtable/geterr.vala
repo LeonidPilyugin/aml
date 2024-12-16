@@ -7,9 +7,6 @@ public static int main(string[] args)
     try {
         var b = a.get_element("el");
         assert_not_reached();
-    } catch (DataCollectionError.ID_ERROR e) {
-        return 0;
-    }
-    assert_not_reached();
-    return 1;
+    } catch (DataCollectionError.ID_ERROR e) { }
+    return 0;
 }

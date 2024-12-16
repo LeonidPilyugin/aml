@@ -18,7 +18,7 @@ namespace AmlMath
         /**
          * Wrapped Gsl.Matrix
          */
-        public Gsl.Matrix matrix { get; private owned set; }
+        private Gsl.Matrix matrix;
 
         /**
          * Creates sized Matrix

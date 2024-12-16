@@ -64,8 +64,10 @@ namespace AmlCore
         {
             if (!this.has_element(id))
                 throw new DataCollectionError.ID_ERROR(@"Does not contain id \"$id\"");
-            if (this.get_parser().is_last_token(id))
+            if (this.get_parser().is_last_token(id)) {
                 this.elements.remove(id);
+                return;
+            }
             var next_token = this.get_parser().next_token(id);
             var tail = this.get_parser().drop_next_token(id);
             DataCollection next_element = (DataCollection) this.elements.get(next_token);
