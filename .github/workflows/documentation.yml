@@ -18,7 +18,7 @@ jobs:
         run: apt-get update && apt-get -y install libvala-dev valac git libgsl-dev python3-pip && apt-get -y remove meson && pip3 install --user meson
 
       - name: Build
-        run: meson build && ninja -C build
+        run: export PATH=$PATH:/github/home/.local/bin && meson build && ninja -C build
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: peaceiris/actions-gh-pages@v3
