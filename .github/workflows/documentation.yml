@@ -15,7 +15,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install dependencies
-        run: apt-get update && apt-get -y install libvala-dev valac git libgsl-dev python3-pip && apt-get -y remove meson && pip3 install --user meson
+        # run: apt-get update && apt-get -y install libvala-dev valac git libgsl-dev python3-pip && apt-get -y remove meson && pip3 install --user meson
+        run: apt-get update && apt-get upgrade && apt-get -y install libvala-dev valac meson git libgsl-dev
 
       - name: Build
         run: export PATH=$PATH:/github/home/.local/bin && meson build && ninja -C build
