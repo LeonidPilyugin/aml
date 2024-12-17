@@ -14,11 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Instal Archlinux
-        run: apt-get update && apt-get -y install curl wget sudo docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin && curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
       - name: Install dependencies
-        # run: apt-get update && apt-get -y install libvala-dev valac git libgsl-dev python3-pip && apt-get -y remove meson && pip3 install --user meson
-        run: sudo pacman --noconfirm -Syu vala meson gobject-introspection gsl
+        run: apt-get update && apt-get -y install python3-pip libvala-dev valac git && apt remove -y meson && pip3 install --upgrade meson
       - name: Build
         run: meson build && ninja -C build
       - name: Deploy
