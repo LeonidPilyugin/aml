@@ -11,4 +11,5 @@ tests += {
     'DataCollectionImplicitSet': files('implicitset.vala'),
     'DataCollectionSetAfterDel': files('setafterdel.vala'),
     'DataCollectionSetRemove': files('setremove.vala'),
+    'DataCollectionMemoryTest': files('memorytest.vala'),
 }
