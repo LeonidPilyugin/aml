@@ -14,8 +14,10 @@ if valadoc.found()
             dependencies += dep
         endforeach
         sources += module['sources']
-        girdirs += '--girdir=' + module['build_dir']
-        girs += module['gir_target']
+        if compile_lib
+            girdirs += '--girdir=' + module['build_dir']
+            girs += module['gir_target']
+        endif
     endforeach
 
     custom_target(

@@ -34,44 +34,46 @@ module_dict += { 'c_args': [
     '-X', '-I' + modules['math']['build_dir'],
 ] }
 
-module_dict += { 'lib_target': custom_target(
-    'lib',
-    command: [
-        valac,
-        '--directory=' + module_dict['build_dir'],
-        '--gir=' + module_dict['gir_name'],
-        '--library=' + module_dict['extless_name'],
-        '--girdir=' + modules['core']['build_dir'],
-        '--vapidir=' + modules['core']['build_dir'],
-        '--girdir=' + modules['math']['build_dir'],
-        '--vapidir=' + modules['math']['build_dir'],
-        '-H', module_dict['build_dir'] / module_dict['header_name'],
-        module_dict['dependencies'],
-        '--output=' + module_dict['lib_name'],
-        module_dict['c_args'],
-        module_dict['sources'],
-    ],
-    depends: [ modules['core']['gir_target'], modules['math']['gir_target'] ],
-    output: [module_dict['lib_name'], module_dict['header_name'], module_dict['gir_name']],
-) }
+if compile_lib
+    module_dict += { 'lib_target': custom_target(
+        'lib',
+        command: [
+            valac,
+            '--directory=' + module_dict['build_dir'],
+            '--gir=' + module_dict['gir_name'],
+            '--library=' + module_dict['extless_name'],
+            '--girdir=' + modules['core']['build_dir'],
+            '--vapidir=' + modules['core']['build_dir'],
+            '--girdir=' + modules['math']['build_dir'],
+            '--vapidir=' + modules['math']['build_dir'],
+            '-H', module_dict['build_dir'] / module_dict['header_name'],
+            module_dict['dependencies'],
+            '--output=' + module_dict['lib_name'],
+            module_dict['c_args'],
+            module_dict['sources'],
+        ],
+        depends: [ modules['core']['gir_target'], modules['math']['gir_target'] ],
+        output: [module_dict['lib_name'], module_dict['header_name'], module_dict['gir_name']],
+    ) }
 
-module_dict += { 'gir_target': custom_target(
-    'typelib',
-    command: [
-        g_ir_compiler,
-        '--includedir=' + modules['core']['build_dir'],
-        '--includedir=' + modules['math']['build_dir'],
-        '--shared-library',
-        module_dict['lib_target'].full_path(),
-        '--output=' + module_dict['build_dir'] / module_dict['typelib_name'],
-        module_dict['build_dir'] / module_dict['gir_name'],
-    ],
-    depends: module_dict['lib_target'],
-    output: module_dict['typelib_name'],
-) }
+    module_dict += { 'gir_target': custom_target(
+        'typelib',
+        command: [
+            g_ir_compiler,
+            '--includedir=' + modules['core']['build_dir'],
+            '--includedir=' + modules['math']['build_dir'],
+            '--shared-library',
+            module_dict['lib_target'].full_path(),
+            '--output=' + module_dict['build_dir'] / module_dict['typelib_name'],
+            module_dict['build_dir'] / module_dict['gir_name'],
+        ],
+        depends: module_dict['lib_target'],
+        output: module_dict['typelib_name'],
+    ) }
 
-module_dict += { 'link_args': [ '-X', '-L' + module_dict['build_dir'], '-X', '-l' + module_dict['extless_name'].to_lower() ] }
+    module_dict += { 'link_args': [ '-X', '-L' + module_dict['build_dir'], '-X', '-l' + module_dict['extless_name'].to_lower() ] }
 
-subdir('test')
+    subdir('test')
+endif
 
 modules += { 'box': module_dict }

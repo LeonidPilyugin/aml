@@ -15,9 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install dependencies
-        run: apt-get update && apt-get -y install python3-pip libvala-dev valac git libgsl-dev libglib2.0-dev && apt remove -y meson && pip3 install --upgrade meson
+        run: apt-get update && apt-get -y install python3-pip libvala-dev valac git libgsl-dev && apt remove -y meson && pip3 install --upgrade meson
       - name: Build
-        run: meson build && ninja -C build
+        run: meson build -Ddoconly=enabled && ninja -C build
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: peaceiris/actions-gh-pages@v3
