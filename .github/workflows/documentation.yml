@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Instal Archlinux
-        run: apt-get update && apt-get -y install curl && curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
+        run: apt-get update && apt-get -y install curl wget && curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
       - name: Install dependencies
         # run: apt-get update && apt-get -y install libvala-dev valac git libgsl-dev python3-pip && apt-get -y remove meson && pip3 install --user meson
         run: sudo pacman --noconfirm -Syu vala meson gobject-introspection gsl
