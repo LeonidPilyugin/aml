@@ -6,13 +6,18 @@ project(
     meson_version: '>=1.4.0',
 )
 
-if get_option('doconly').enabled()
-    compile_lib = false
-else
-    compile_lib = true
+compile_lib = get_option('lib')
+generate_typelib = get_option('typelib')
+generate_doc = get_option('doc')
+
+if compile_lib
     valac = find_program('valac')
+endif
+
+if generate_typelib
     g_ir_compiler = find_program('g-ir-compiler')
 endif
+
 
 modules = {}
 
@@ -21,6 +26,8 @@ subdir('aml/math')
 subdir('aml/box')
 subdir('aml/particle')
 
-doc_dir = meson.current_build_dir() / '../doc'
-
-subdir('doc')
+if generate_doc
+    valadoc = find_program('valadoc', required : false)
+    subdir('doc')
+endif
+    

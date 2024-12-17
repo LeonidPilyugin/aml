@@ -56,6 +56,12 @@ if compile_lib
         output: [module_dict['lib_name'], module_dict['header_name'], module_dict['gir_name']],
     ) }
 
+    module_dict += { 'link_args': [ '-X', '-L' + module_dict['build_dir'], '-X', '-l' + module_dict['extless_name'].to_lower() ] }
+
+    subdir('test')
+endif
+
+if generate_typelib
     module_dict += { 'gir_target': custom_target(
         'typelib',
         command: [
@@ -70,10 +76,6 @@ if compile_lib
         depends: module_dict['lib_target'],
         output: module_dict['typelib_name'],
     ) }
-
-    module_dict += { 'link_args': [ '-X', '-L' + module_dict['build_dir'], '-X', '-l' + module_dict['extless_name'].to_lower() ] }
-
-    subdir('test')
 endif
 
 modules += { 'box': module_dict }

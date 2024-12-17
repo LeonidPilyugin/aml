@@ -1,0 +1,14 @@
+tests += {
+    'DataCollectionCreate': files('create.vala'),
+    'DataCollectionCopy': files('copy.vala'),
+    'DataCollectionDeleteError': files('delerr.vala'),
+    'DataObjectDoubleAssignError': files('doubleassign.vala'),
+    'DataCollectionDoubleSet': files('doubleset.vala'),
+    'DataCollectionGetError': files('geterr.vala'),
+    'DataCollectionNestedSet': files('nestedset.vala'),
+    'DataCollectionSelfSet': files('selfset.vala'),
+    'DataCollectionSet': files('set.vala'),
+    'DataCollectionImplicitSet': files('implicitset.vala'),
+    'DataCollectionSetAfterDel': files('setafterdel.vala'),
+    'DataCollectionSetRemove': files('setremove.vala'),
+}

@@ -2,10 +2,10 @@ using AmlCore;
 
 public static int main(string[] args)
 {
-    var a = new DataHashTable.empty();    
-    var b = new DataHashTable.empty();    
+    var a = new DataCollection.empty();
+    assert(!a.has_element("el"));
     try {
-        a.set_element("f.g.s.f.d.s", b);
+        a.del_element("el");
         assert_not_reached();
     } catch (DataCollectionError.ID_ERROR e) { }
     return 0;

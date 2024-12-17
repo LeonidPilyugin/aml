@@ -6,29 +6,81 @@ namespace AmlCore
         SELF_SET_ERROR,
     }
 
-    public abstract class DataCollection: DataObject
+    public class DataCollection : DataObject 
     {
-        private IdParser parser = new StrSepIdParser(".");
+        private weak DataCollection? parent = null;
+        private HashTable<string, DataObject> elements = new HashTable<string, DataObject>(str_hash, str_equal);
+        
+        public DataCollection.empty() { }
 
-        public void set_parser(IdParser parser)
+        ~DataCollection()
         {
-            this.parser = parser;
+            foreach (var id in this.get_ids())
+                this.del_element(id);
         }
 
-
-        public IdParser get_parser()
+        public bool is_root()
         {
-            return this.parser;
+            return this.parent == null;
         }
 
-        public abstract bool has_element(string id);
+        public uint n_elements()
+        {
+            return this.elements.size();
+        }
 
-        public abstract DataObject get_element(string id) throws DataCollectionError.ID_ERROR;
+        public DataCollection root()
+        {
+            if (this.is_root())
+                return this;
+            return this.parent.root();
+        }
 
-        public abstract void del_element(string id)throws DataCollectionError.ID_ERROR;
+        public bool has_element(string id)
+        {
+            return id in this.elements;
+        }
 
-        public abstract void set_element(string id, owned DataObject prop) throws DataCollectionError.ID_ERROR, DataCollectionError.SELF_SET_ERROR, DataObjectError.DOUBLE_ASSIGN_ERROR;
+        public List<weak string> get_ids()
+        {
+            return this.elements.get_keys();
+        }
 
-        public abstract List<weak string> get_ids();
+        public DataObject get_element(string id) throws DataCollectionError.ID_ERROR
+        {
+            if (!has_element(id))
+                throw new DataCollectionError.ID_ERROR(@"Does not contain element with id \"$id\"");
+            return this.elements.get(id);
+        }
+
+        public void set_element(string id, DataObject element) throws DataCollectionError.SELF_SET_ERROR, DataObjectError.DOUBLE_ASSIGN_ERROR
+        {
+            if (element == this)
+                throw new DataCollectionError.SELF_SET_ERROR("Trying to set itself");
+            if (element == this.root())
+                throw new DataCollectionError.SELF_SET_ERROR("Implicit selfset");
+            
+            element._assign();
+            if (element is DataCollection)
+                ((DataCollection) element).parent = this;
+            this.elements.set(id, element);
+        }
+
+        public void del_element(string id) throws DataCollectionError.ID_ERROR
+        {
+            var element = this.get_element(id);
+            element._retract();
+            if (element is DataCollection)
+                ((DataCollection) element).parent = null;
+            this.elements.remove(id);
+        }
+
+        public override DataObject copy()
+        {
+            var result = new DataCollection.empty();
+            foreach(var id in this.get_ids())
+                result.set_element(id, this.get_element(id).copy());
+            return result;
+        }
     }
 }

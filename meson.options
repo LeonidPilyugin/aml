@@ -1,1 +1,3 @@
-option('doconly', type: 'feature', value: 'disabled')
+option('doc', type: 'boolean', value: true, description: 'Generate documentation')
+option('typelib', type: 'boolean', value: true, description: 'Generate typelib')
+option('lib', type: 'boolean', value: true, description: 'Compile library')

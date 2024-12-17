@@ -1,7 +1,6 @@
 tests = { }
 
-subdir('datahashtable')
-subdir('strsepidparser')
+subdir('node')
 
 foreach name, sources : tests
     test(

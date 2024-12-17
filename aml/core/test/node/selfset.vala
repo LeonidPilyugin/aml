@@ -2,7 +2,7 @@ using AmlCore;
 
 public static int main(string[] args)
 {
-    var a = new DataHashTable.empty();    
+    var a = new DataCollection.empty();    
     try {
         a.set_element("el", a);
         assert_not_reached();

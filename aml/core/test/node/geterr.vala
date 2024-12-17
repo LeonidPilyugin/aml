@@ -2,11 +2,12 @@ using AmlCore;
 
 public static int main(string[] args)
 {
-    var a = new DataHashTable.empty();    
+    var a = new DataCollection.empty();
     assert(!a.has_element("el"));
     try {
-        a.del_element("el");
+        var b = a.get_element("el");
         assert_not_reached();
     } catch (DataCollectionError.ID_ERROR e) { }
+    return 0;
     return 0;
 }

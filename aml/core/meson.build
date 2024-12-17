@@ -19,10 +19,7 @@ module_dict += { 'sources': files(
     'src/object.vala',
     'src/dataobject.vala',
     'src/datacollection.vala',
-    'src/datahashtable.vala',
     'src/action.vala',
-    'src/idparser/idparser.vala',
-    'src/idparser/strsepidparser.vala',
 ) }
 
 module_dict += { 'c_args': [
@@ -49,6 +46,12 @@ if compile_lib
         output: [module_dict['lib_name'], module_dict['header_name'], module_dict['gir_name']],
     ) }
 
+    module_dict += { 'link_args': [ '-X', '-L' + module_dict['build_dir'], '-X', '-l' + module_dict['extless_name'].to_lower() ] }
+
+    subdir('test')
+endif
+
+if generate_typelib
     module_dict += { 'gir_target': custom_target(
         'typelib',
         command: [
@@ -61,10 +64,6 @@ if compile_lib
         depends: module_dict['lib_target'],
         output: module_dict['typelib_name'],
     ) }
-
-    module_dict += { 'link_args': [ '-X', '-L' + module_dict['build_dir'], '-X', '-l' + module_dict['extless_name'].to_lower() ] }
-
-    subdir('test')
 endif
 
 modules += { 'core': module_dict }
