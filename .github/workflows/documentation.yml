@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install dependencies
-        run: apt-get update && apt-get -y install libvala-dev valac meson git libgsl-dev
+        run: apt-get update && apt-get -y install libvala-dev valac meson git libgsl-dev build-essential
 
       - name: Build
         run: meson build && ninja -C build
