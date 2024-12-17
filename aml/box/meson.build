@@ -74,4 +74,4 @@ module_dict += { 'link_args': [ '-X', '-L' + module_dict['build_dir'], '-X', '-l
 
 subdir('test')
 
-modules += { 'math': module_dict }
+modules += { 'box': module_dict }

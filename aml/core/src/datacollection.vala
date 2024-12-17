@@ -21,15 +21,13 @@ namespace AmlCore
             return this.parser;
         }
 
-        public abstract bool contains(DataObject obj);
-
         public abstract bool has_element(string id);
 
         public abstract DataObject get_element(string id) throws DataCollectionError.ID_ERROR;
 
         public abstract void del_element(string id)throws DataCollectionError.ID_ERROR;
 
-        public abstract void set_element(string id, owned DataObject prop) throws DataCollectionError.ID_ERROR, DataCollectionError.SELF_SET_ERROR;
+        public abstract void set_element(string id, owned DataObject prop) throws DataCollectionError.ID_ERROR, DataCollectionError.SELF_SET_ERROR, DataObjectError.DOUBLE_ASSIGN_ERROR;
 
         public abstract List<weak string> get_ids();
     }

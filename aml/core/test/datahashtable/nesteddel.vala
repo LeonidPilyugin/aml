@@ -11,6 +11,9 @@ public static int main(string[] args)
     DataCollection d = (DataCollection) a.get_element("el");
     assert(d.get_element("el") == c);
     a.del_element("el.el");
-    assert(!a.contains(c));
+    try {
+        a.get_element("el.el");
+        assert_not_reached();
+    } catch (DataCollectionError.ID_ERROR e) { }
     return 0;
 }

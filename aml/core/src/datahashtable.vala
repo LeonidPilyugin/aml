@@ -9,19 +9,6 @@ namespace AmlCore
             this.elements = new HashTable<string, DataObject>(str_hash, str_equal);
         }
 
-        public override bool contains(DataObject obj)
-        {
-            var vals = this.elements.get_values();
-            foreach (unowned var v in vals) {
-                if (v == obj) return true;
-            }
-            foreach (unowned var v in vals)
-                if (v is DataCollection)
-                    if (((DataCollection) v).contains(obj)) return true;
-            return false;
-                    
-        }
-
         public override bool has_element(string id)
         {
             // if last token, check if elements has it
@@ -65,6 +52,8 @@ namespace AmlCore
             if (!this.has_element(id))
                 throw new DataCollectionError.ID_ERROR(@"Does not contain id \"$id\"");
             if (this.get_parser().is_last_token(id)) {
+                var el = this.get_element(id);
+                el.retract();
                 this.elements.remove(id);
                 return;
             }
@@ -74,16 +63,15 @@ namespace AmlCore
             next_element.del_element(tail);
         }
 
-        public override void set_element(string id, owned DataObject element) throws DataCollectionError.ID_ERROR, DataCollectionError.SELF_SET_ERROR
+        public override void set_element(string id, owned DataObject element) throws DataCollectionError.ID_ERROR, DataCollectionError.SELF_SET_ERROR, DataObjectError.DOUBLE_ASSIGN_ERROR
         {
             // check that not assigning itself
             if (element == this)
                 throw new DataCollectionError.SELF_SET_ERROR("Trying to set field with itself");
-            if (element is DataCollection && ((DataCollection) element).contains(this))
-                throw new DataCollectionError.SELF_SET_ERROR("Trying to set field with itself");
             // if last token, set
             if (this.get_parser().is_last_token(id))
             {
+                element.assign();
                 this.elements.set(id, element);
                 return;
             }

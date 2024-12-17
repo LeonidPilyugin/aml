@@ -16,4 +16,6 @@ subdir('aml/math')
 subdir('aml/box')
 subdir('aml/particle')
 
+doc_dir = meson.current_build_dir() / '../doc'
+
 subdir('doc')

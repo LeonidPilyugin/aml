@@ -22,16 +22,18 @@ if valadoc.found()
         'doc',
         command: [
             valadoc,
-            girdirs,
             '--force',
+            girdirs,
             '-o',
             meson.current_build_dir(),
-            dependencies,
             '--package-name=' + meson.project_name(),
             '--package-version=' + meson.project_version(),
+            dependencies,
             sources,
         ],
         output: 'index.html',
         depends: girs,
-  )
+        install: true,
+        install_dir: meson.current_build_dir(),
+    )
 endif

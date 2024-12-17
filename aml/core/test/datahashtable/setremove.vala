@@ -8,7 +8,6 @@ public static int main(string[] args)
     a.set_element("el", (owned) b);
     assert(a.has_element("el"));
     a.del_element("el");
-    message("lol");
     assert(!a.has_element("el"));
     return 0;    
 }

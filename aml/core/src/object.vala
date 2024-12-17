@@ -1,7 +1,4 @@
 namespace AmlCore
 {
-    public abstract class AmlObject : Object
-    {
-
-    }
+    public abstract class AmlObject : Object { }
 }
