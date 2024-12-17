@@ -14,10 +14,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Instal Archlinux
+        run: curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
       - name: Install dependencies
         # run: apt-get update && apt-get -y install libvala-dev valac git libgsl-dev python3-pip && apt-get -y remove meson && pip3 install --user meson
-        run: add-apt-repository universe && apt-get update && apt-get -y install libvala-dev valac meson-1.5 git libgsl-dev
-
+        run: sudo pacman --noconfirm -Syu vala meson gobject-introspection gsl
       - name: Build
         run: meson build && ninja -C build
       - name: Deploy
