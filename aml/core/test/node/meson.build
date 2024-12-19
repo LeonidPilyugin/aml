@@ -3,6 +3,7 @@ tests += {
     'DataCollectionCopy': files('copy.vala'),
     'DataCollectionDeleteError': files('delerr.vala'),
     'DataObjectDoubleAssignError': files('doubleassign.vala'),
+    'DataObjectUnrefDoubleAssignError': files('unrefdoubleassign.vala'),
     'DataCollectionDoubleSet': files('doubleset.vala'),
     'DataCollectionGetError': files('geterr.vala'),
     'DataCollectionNestedSet': files('nestedset.vala'),

@@ -45,7 +45,7 @@ namespace AmlParticle
             return this.properties.get(id).copy();
         }
 
-        public void set_prop(string id, owned PerParticleProperty prop) throws ParticlesError.SIZE_ERROR
+        public void set_prop(string id, PerParticleProperty prop) throws ParticlesError.SIZE_ERROR
         {
             if (prop.get_size() != this.size)
                 throw new PerParticlePropertyError.SIZE_ERROR("Property size is different");

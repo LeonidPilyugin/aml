@@ -35,20 +35,6 @@ namespace AmlMath
         }
 
         /**
-         * Creates Vector from GSL Vector
-         * 
-         * @param vector GSL Vector to wrap
-         * 
-         * @throws VectorError.SIZE_ERROR if size of vector is 0
-         */
-        public Vector.from_gsl(owned Gsl.Vector vector) throws VectorError
-        {
-            if (vector.size == 0)
-                throw new VectorError.SIZE_ERROR("Got zero-sized vector");
-            this.vector = (owned) vector;
-        }
-
-        /**
          * Creates Vector initialized data
          * 
          * @param array Array to use as Vector data

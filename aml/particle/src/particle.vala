@@ -29,7 +29,7 @@ namespace AmlParticle
             return this.data.contains(id);
         }
 
-        public void set_prop(string id, owned Variant prop)
+        public void set_prop(string id, Variant prop)
         {
             this.data.set(id, prop);
         }

@@ -16,6 +16,7 @@ endif
 
 if generate_typelib
     g_ir_compiler = find_program('g-ir-compiler')
+    assert(compile_lib)
 endif
 
 

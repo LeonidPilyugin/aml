@@ -38,20 +38,6 @@ namespace AmlMath
         }
 
         /**
-         * Creates Matrix from GSL Matrix
-         *
-         * @param matrix GSL Matrix
-         * 
-         * @throws MatrixError.SIZE_ERROR If one of dimensions of matrix is 0
-         */
-        public Matrix.from_gsl(owned Gsl.Matrix matrix) throws MatrixError
-        {
-            if (matrix.size1 == 0 || matrix.size2 == 0)
-                throw new MatrixError.SIZE_ERROR("One of dimensions is zero");
-            this.matrix = (owned) matrix;
-        }
-
-        /**
          * Creates Matrix initialized data
          * 
          * @param array Array to use as Matrix data
