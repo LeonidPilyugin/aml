@@ -1,6 +1,6 @@
 module_dict = {}
 
-module_dict += { 'module_name': 'Box' }
+module_dict += { 'module_name': 'Particles' }
 module_dict += { 'extless_name': meson.project_name() + module_dict['module_name'] + '-' + meson.project_version() }
 module_dict += { 'lib_name': 'lib' + module_dict['extless_name'].to_lower() + '.so' }
 module_dict += { 'gir_name': module_dict['extless_name'] + '.gir' }
@@ -13,16 +13,16 @@ module_dict += { 'doc_dependencies': [
     '--pkg=gobject-2.0',
 ] }
 
-module_dict += { 'dependencies': [
-    module_dict['doc_dependencies'],
-    modules['math']['dependencies'],
-    '--pkg=' + modules['core']['extless_name'],
-    '--pkg=' + modules['math']['extless_name'],
-] }
+module_dict += { 'dependencies': [ module_dict['doc_dependencies'], '--pkg=' + modules['core']['extless_name'] ] }
 
 module_dict += { 'sources': files(
-    'src/box.vala',
-    'src/parallelepipedbox.vala',
+    'src/particle.vala',
+    'src/particles.vala',
+    'src/perparticle/property.vala',
+    'src/perparticle/int64.vala',
+    'src/perparticle/string.vala',
+    'src/perparticle/float64.vala',
+    'src/perparticle/bool.vala',
 ) }
 
 module_dict += { 'c_args': [
@@ -31,7 +31,6 @@ module_dict += { 'c_args': [
     '-X', '-o' + module_dict['build_dir'] / module_dict['lib_name'],
     '-X', '-w',
     '-X', '-I' + modules['core']['build_dir'],
-    '-X', '-I' + modules['math']['build_dir'],
 ] }
 
 if compile_lib
@@ -44,17 +43,14 @@ if compile_lib
             '--library=' + module_dict['extless_name'],
             '--girdir=' + modules['core']['build_dir'],
             '--vapidir=' + modules['core']['build_dir'],
-            '--girdir=' + modules['math']['build_dir'],
-            '--vapidir=' + modules['math']['build_dir'],
             '-H', module_dict['build_dir'] / module_dict['header_name'],
             module_dict['dependencies'],
             '--output=' + module_dict['lib_name'],
             module_dict['c_args'],
             modules['core']['link_args'],
-            modules['math']['link_args'],
             module_dict['sources'],
         ],
-        depends: [ modules['core']['gir_target'], modules['math']['gir_target'] ],
+        depends: modules['core']['gir_target'],
         output: [module_dict['lib_name'], module_dict['header_name'], module_dict['gir_name']],
     ) }
 
@@ -69,7 +65,6 @@ if generate_typelib
         command: [
             g_ir_compiler,
             '--includedir=' + modules['core']['build_dir'],
-            '--includedir=' + modules['math']['build_dir'],
             '--shared-library',
             module_dict['lib_target'].full_path(),
             '--output=' + module_dict['build_dir'] / module_dict['typelib_name'],
@@ -80,4 +75,4 @@ if generate_typelib
     ) }
 endif
 
-modules += { 'box': module_dict }
+modules += { 'particles': module_dict }

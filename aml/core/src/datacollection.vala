@@ -1,5 +1,48 @@
 namespace AmlCore
 {
+    private class DataCollectionIdParser
+    {
+        private string separator;
+        private Regex alphanumeric;
+
+        public DataCollectionIdParser()
+        {
+            this.separator = ".";
+            this.alphanumeric = new Regex("[1-zA-Z0-9]+");
+        }
+
+        public bool is_valid_id(string id)
+        {
+            var tokens = id.split(this.separator);
+            foreach (unowned var token in tokens)
+                if (!this.is_valid_token(token)) return false;
+            return tokens.length > 0;
+        }
+
+        public bool is_valid_token(string token)
+        {
+            var temp = this.alphanumeric.split(token);
+            return temp.length == 2 && "" == temp[0] && "" == temp[1];
+        }
+
+        public string get_next_token(string id)
+        {
+            var tokens = id.split(this.separator);
+            return tokens[0];
+        }
+
+        public string drop_next_token(string id)
+        {
+            var tokens = id.split(this.separator)[1:];
+            return string.joinv(this.separator, tokens);
+        }
+
+        public string concat(string first, string second)
+        {
+            return first + this.separator + second;
+        }
+    }
+
     public errordomain DataCollectionError
     {
         ID_ERROR,
@@ -10,9 +53,8 @@ namespace AmlCore
     {
         private weak DataCollection? parent = null;
         private HashTable<string, DataObject> elements = new HashTable<string, DataObject>(str_hash, str_equal);
+        private static DataCollectionIdParser parser = new DataCollectionIdParser();
         
-        public DataCollection.empty() { }
-
         ~DataCollection()
         {
             foreach (var id in this.get_ids())
@@ -36,9 +78,17 @@ namespace AmlCore
             return this.parent.root();
         }
 
-        public bool has_element(string id)
+        public static bool is_valid_id(string id)
         {
-            return id in this.elements;
+            return DataCollection.parser.is_valid_id(id);
+        }
+
+        public bool has_element(string id) throws DataCollectionError.ID_ERROR
+        {
+            if (!DataCollection.is_valid_id(id))
+                throw new DataCollectionError.ID_ERROR(@"Got invalid id \"$id\"");
+            unowned List<string>? element = this.get_nested_ids().find_custom(id, strcmp);
+            return element != null;
         }
 
         public List<weak string> get_ids()
@@ -46,39 +96,93 @@ namespace AmlCore
             return this.elements.get_keys();
         }
 
+        public List<string> get_nested_ids()
+        {
+            var res = new List<string>();
+            foreach (var key in this.elements.get_keys())
+            {
+                res.append(key);
+                var val = this.elements.get(key);
+                if (val is DataCollection)
+                {
+                    var to_append = ((DataCollection) val).get_nested_ids();
+                    foreach (var str in to_append)
+                        res.append(DataCollection.parser.concat(key, str));
+                }
+            }
+            
+            return res;
+        }
+
         public DataObject get_element(string id) throws DataCollectionError.ID_ERROR
         {
             if (!has_element(id))
                 throw new DataCollectionError.ID_ERROR(@"Does not contain element with id \"$id\"");
-            return this.elements.get(id);
+
+            if (id in this.elements)
+                return this.elements.get(id);
+            
+            var next_token = DataCollection.parser.get_next_token(id);
+            var next_id = DataCollection.parser.drop_next_token(id);
+            var next_dc = (DataCollection) this.elements.get(next_token);
+            
+            return next_dc.get_element(next_id);
         }
 
-        public void set_element(string id, DataObject element) throws DataCollectionError.SELF_SET_ERROR, DataObjectError.DOUBLE_ASSIGN_ERROR
+        public void set_element(string id, DataObject element) throws DataCollectionError.ID_ERROR, DataCollectionError.SELF_SET_ERROR, DataObjectError.DOUBLE_ASSIGN_ERROR
         {
+            if (!DataCollection.is_valid_id(id))
+                throw new DataCollectionError.ID_ERROR(@"Got invalid id \"$id\"");
             if (element == this)
                 throw new DataCollectionError.SELF_SET_ERROR("Trying to set itself");
             if (element == this.root())
                 throw new DataCollectionError.SELF_SET_ERROR("Implicit selfset");
             
-            element._assign();
-            if (element is DataCollection)
-                ((DataCollection) element).parent = this;
-            this.elements.set(id, element);
+            if (DataCollection.parser.is_valid_token(id))
+            {
+                element.assign();
+                if (element is DataCollection)
+                    ((DataCollection) element).parent = this;
+
+                this.elements.set(id, element);
+                return;
+            }
+
+            var next_token = DataCollection.parser.get_next_token(id);
+            var next_id = DataCollection.parser.drop_next_token(id);
+            var next_dc = new DataCollection();
+
+            next_dc.set_element(next_id, element);
+
+            this.set_element(next_token, next_dc);
         }
 
         public void del_element(string id) throws DataCollectionError.ID_ERROR
         {
-            var element = this.get_element(id);
-            element._retract();
-            if (element is DataCollection)
-                ((DataCollection) element).parent = null;
-            this.elements.remove(id);
+            if (!has_element(id))
+                throw new DataCollectionError.ID_ERROR(@"Does not contain element with id \"$id\"");
+
+            if (DataCollection.parser.is_valid_token(id))
+            {
+                var element = this.get_element(id);
+                element.retract();
+                if (element is DataCollection)
+                    ((DataCollection) element).parent = null;
+                this.elements.remove(id);
+                return;
+            }
+
+            var next_token = DataCollection.parser.get_next_token(id);
+            var next_id = DataCollection.parser.drop_next_token(id);
+            var next_dc = (DataCollection) this.elements.get(next_token);
+            
+            next_dc.del_element(next_id);
         }
 
         public override DataObject copy()
         {
-            var result = new DataCollection.empty();
-            foreach(var id in this.get_ids())
+            var result = new DataCollection();
+            foreach(var id in this.elements.get_keys())
                 result.set_element(id, this.get_element(id).copy());
             return result;
         }

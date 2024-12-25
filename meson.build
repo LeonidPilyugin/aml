@@ -23,12 +23,14 @@ endif
 modules = {}
 
 subdir('aml/core')
+subdir('aml/basictypes')
 subdir('aml/math')
 subdir('aml/box')
-subdir('aml/particle')
+subdir('aml/particles')
+subdir('aml/lammpsio')
 
 if generate_doc
-    valadoc = find_program('valadoc', required : false)
+    valadoc = find_program('valadoc')
     subdir('doc')
 endif
     

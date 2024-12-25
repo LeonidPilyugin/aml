@@ -43,6 +43,7 @@ if compile_lib
             module_dict['dependencies'],
             '--output=' + module_dict['lib_name'],
             module_dict['c_args'],
+            modules['core']['link_args'],
             module_dict['sources'],
         ],
         depends: modules['core']['gir_target'],

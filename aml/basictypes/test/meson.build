@@ -1,7 +1,5 @@
 tests = { }
 
-subdir('datacollection')
-
 foreach name, sources : tests
     test(
         module_dict['module_name'] + name,
@@ -12,13 +10,17 @@ foreach name, sources : tests
                 '--directory=' + meson.current_build_dir(),
                 '--vapidir=' + module_dict['build_dir'],
                 '--girdir=' + module_dict['build_dir'],
+                '--vapidir=' + modules['core']['build_dir'],
+                '--girdir=' + modules['core']['build_dir'],
                 [ module_dict['dependencies'], '--pkg=' + module_dict['extless_name'] ],
                 '--output=' + name,
                 '-X', '-static-libasan',
                 '-X', '-I' + module_dict['build_dir'],
+                '-X', '-I' + modules['core']['build_dir'],
                 '-X', '-w',
                 module_dict['link_args'],
-                sources
+                modules['core']['link_args'],
+                sources,
             ],
             output: name,
             depends: module_dict['lib_target'],
