@@ -19,10 +19,12 @@
         </ul>
         <hr class="navi_hr"/>
         <ul class="navi_main">
+          <li class="namespace"><a href="AmlBasicTypes.html">AmlBasicTypes</a></li>
           <li class="namespace"><a href="AmlBox.html">AmlBox</a></li>
           <li class="namespace"><a href="AmlCore.html">AmlCore</a></li>
+          <li class="namespace"><a href="AmlLammpsIo.html">AmlLammpsIo</a></li>
           <li class="namespace"><a href="AmlMath.html">AmlMath</a></li>
-          <li class="namespace"><a href="AmlParticle.html">AmlParticle</a></li>
+          <li class="namespace"><a href="AmlParticles.html">AmlParticles</a></li>
         </ul>
       </div>
       <div class="site_content">
@@ -32,6 +34,15 @@
         <h2 class="main_title">Content:</h2>
         <h3 class="main_title">Namespaces:</h3>
         <ul class="navi_inline">
+          <li class="namespace"><a href="AmlBasicTypes.html">AmlBasicTypes</a></li>
+          <h3 class="main_title">Classes:</h3>
+          <ul class="navi_inline">
+            <li class="abstract_class"><a href="AmlBasicTypes.BasicType.html">BasicType</a></li>
+            <li class="class"><a href="AmlBasicTypes.Bool.html">Bool</a></li>
+            <li class="class"><a href="AmlBasicTypes.Float64.html">Float64</a></li>
+            <li class="class"><a href="AmlBasicTypes.Int64.html">Int64</a></li>
+            <li class="class"><a href="AmlBasicTypes.String.html">String</a></li>
+          </ul>
           <li class="namespace"><a href="AmlBox.html">AmlBox</a></li>
           <h3 class="main_title">Classes:</h3>
           <ul class="navi_inline">
@@ -46,14 +57,22 @@
           <h3 class="main_title">Classes:</h3>
           <ul class="navi_inline">
             <li class="abstract_class"><a href="AmlCore.Action.html">Action</a></li>
+            <li class="abstract_class"><a href="AmlCore.ActionParams.html">ActionParams</a></li>
             <li class="abstract_class"><a href="AmlCore.AmlObject.html">AmlObject</a></li>
             <li class="class"><a href="AmlCore.DataCollection.html">DataCollection</a></li>
             <li class="abstract_class"><a href="AmlCore.DataObject.html">DataObject</a></li>
           </ul>
           <h3 class="main_title">Error domains:</h3>
           <ul class="navi_inline">
+            <li class="errordomain"><a href="AmlCore.ActionError.html">ActionError</a></li>
             <li class="errordomain"><a href="AmlCore.DataCollectionError.html">DataCollectionError</a></li>
             <li class="errordomain"><a href="AmlCore.DataObjectError.html">DataObjectError</a></li>
+          </ul>
+          <li class="namespace"><a href="AmlLammpsIo.html">AmlLammpsIo</a></li>
+          <h3 class="main_title">Classes:</h3>
+          <ul class="navi_inline">
+            <li class="class"><a href="AmlLammpsIo.DumpReader.html">DumpReader</a></li>
+            <li class="class"><a href="AmlLammpsIo.DumpReaderParams.html">DumpReaderParams</a></li>
           </ul>
           <li class="namespace"><a href="AmlMath.html">AmlMath</a></li>
           <h3 class="main_title">Classes:</h3>
@@ -68,22 +87,29 @@
             <li class="errordomain"><a href="AmlMath.MatrixError.html">MatrixError</a></li>
             <li class="errordomain"><a href="AmlMath.VectorError.html">VectorError</a></li>
           </ul>
-          <li class="namespace"><a href="AmlParticle.html">AmlParticle</a></li>
+          <li class="namespace"><a href="AmlParticles.html">AmlParticles</a></li>
+          <h3 class="main_title">Interfaces:</h3>
+          <ul class="navi_inline">
+            <li class="interface"><a href="AmlParticles.ConvertableToBool.html">ConvertableToBool</a></li>
+            <li class="interface"><a href="AmlParticles.ConvertableToFloat64.html">ConvertableToFloat64</a></li>
+            <li class="interface"><a href="AmlParticles.ConvertableToInt64.html">ConvertableToInt64</a></li>
+            <li class="interface"><a href="AmlParticles.ConvertableToString.html">ConvertableToString</a></li>
+          </ul>
           <h3 class="main_title">Classes:</h3>
           <ul class="navi_inline">
-            <li class="class"><a href="AmlParticle.BoolPerParticleProperty.html">BoolPerParticleProperty</a></li>
-            <li class="class"><a href="AmlParticle.Float64PerParticleProperty.html">Float64PerParticleProperty</a></li>
-            <li class="class"><a href="AmlParticle.Int64PerParticleProperty.html">Int64PerParticleProperty</a></li>
-            <li class="class"><a href="AmlParticle.Particle.html">Particle</a></li>
-            <li class="class"><a href="AmlParticle.Particles.html">Particles</a></li>
-            <li class="abstract_class"><a href="AmlParticle.PerParticleProperty.html">PerParticleProperty</a></li>
-            <li class="class"><a href="AmlParticle.StringPerParticleProperty.html">StringPerParticleProperty</a></li>
+            <li class="class"><a href="AmlParticles.BoolPerParticleProperty.html">BoolPerParticleProperty</a></li>
+            <li class="class"><a href="AmlParticles.Float64PerParticleProperty.html">Float64PerParticleProperty</a></li>
+            <li class="class"><a href="AmlParticles.Int64PerParticleProperty.html">Int64PerParticleProperty</a></li>
+            <li class="class"><a href="AmlParticles.Particle.html">Particle</a></li>
+            <li class="class"><a href="AmlParticles.Particles.html">Particles</a></li>
+            <li class="abstract_class"><a href="AmlParticles.PerParticleProperty.html">PerParticleProperty</a></li>
+            <li class="class"><a href="AmlParticles.StringPerParticleProperty.html">StringPerParticleProperty</a></li>
           </ul>
           <h3 class="main_title">Error domains:</h3>
           <ul class="navi_inline">
-            <li class="errordomain"><a href="AmlParticle.ParticleError.html">ParticleError</a></li>
-            <li class="errordomain"><a href="AmlParticle.ParticlesError.html">ParticlesError</a></li>
-            <li class="errordomain"><a href="AmlParticle.PerParticlePropertyError.html">PerParticlePropertyError</a></li>
+            <li class="errordomain"><a href="AmlParticles.ParticleError.html">ParticleError</a></li>
+            <li class="errordomain"><a href="AmlParticles.ParticlesError.html">ParticlesError</a></li>
+            <li class="errordomain"><a href="AmlParticles.PerParticlePropertyError.html">PerParticlePropertyError</a></li>
           </ul>
         </ul>
       </div>
