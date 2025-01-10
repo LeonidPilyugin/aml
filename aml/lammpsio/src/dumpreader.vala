@@ -65,12 +65,13 @@ namespace AmlLammpsIo
             this.time_id = time_id;
         }
 
-        public HashTable<string, Type> get_properties()
+        public unowned HashTable<string, Type> get_properties()
         {
-            var res = new HashTable<string, Type>(str_hash, str_equal);
-            foreach (var key in this.properties.get_keys())
-                res.set(key, this.properties.get(key));
-            return res;
+            return this.properties;
+            //var res = new HashTable<string, Type>(str_hash, str_equal);
+            //foreach (var key in this.properties.get_keys())
+            //    res.set(key, this.properties.get(key));
+            //return res;
         }
 
         public void set_properties(owned HashTable<string, Type> properties)

@@ -28,7 +28,7 @@ module_dict += {
 module_dict += { 'sources': files(
     'src/inputhelper.vala',
     'src/dumpreader.vala',
-    # 'src/dumpwriter.vala',
+    'src/dumpwriter.vala',
 ) }
 
 module_dict += { 'c_args': [
