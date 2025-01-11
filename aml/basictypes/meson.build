@@ -50,7 +50,7 @@ if compile_lib
         ],
         depends: modules['core']['gir_target'],
         output: [module_dict['lib_name'], module_dict['header_name'], module_dict['gir_name']],
-        build_by_default: true,
+        build_always: true,
     ) }
 
     module_dict += { 'link_args': [ '-X', '-L' + module_dict['build_dir'], '-X', '-l' + module_dict['extless_name'].to_lower() ] }
@@ -71,7 +71,7 @@ if generate_typelib
         ],
         depends: module_dict['lib_target'],
         output: module_dict['typelib_name'],
-        build_by_default: true,
+        build_always: true,
     ) }
 endif
 
