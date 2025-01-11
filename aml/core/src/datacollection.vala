@@ -150,11 +150,21 @@ namespace AmlCore
 
             var next_token = DataCollection.parser.get_next_token(id);
             var next_id = DataCollection.parser.drop_next_token(id);
-            var next_dc = new DataCollection();
 
+            DataCollection next_dc;
+            if (this.has_element(next_token))
+            {
+                var next = this.get_element(next_token);
+                if (!(next is DataCollection))
+                    throw new DataCollectionError.ID_ERROR(@"Element \"$next_token\" exists and is not a DataCollection");
+                next_dc = (DataCollection) next;
+            }
+            else
+            {
+                next_dc = new DataCollection();
+                this.set_element(next_token, next_dc);
+            }
             next_dc.set_element(next_id, element);
-
-            this.set_element(next_token, next_dc);
         }
 
         public void del_element(string id) throws DataCollectionError.ID_ERROR

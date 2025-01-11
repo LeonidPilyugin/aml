@@ -10,6 +10,7 @@ tests += {
     'DataCollectionGetError': files('geterr.vala'),
     'DataCollectionNestedSet': files('nestedset.vala'),
     'DataCollectionNestedSet2': files('nestedset2.vala'),
+    'DataCollectionNestedSet3': files('nestedset3.vala'),
     'DataCollectionSelfSet': files('selfset.vala'),
     'DataCollectionSet': files('set.vala'),
     'DataCollectionImplicitSet': files('implicitset.vala'),
