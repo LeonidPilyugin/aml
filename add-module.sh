@@ -10,7 +10,7 @@ help () {
 project_dir=$PWD/aml
 module_name=$1
 
-module_dir="$project_dir/$module_name"
+module_dir="$project_dir/$(echo "$module_name" | awk '{print tolower($0)}')"
 test_dir="$module_dir/test"
 src_dir="$module_dir/src"
 mkdir -p "$module_dir" "$test_dir" "$src_dir"

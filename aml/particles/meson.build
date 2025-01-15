@@ -1,4 +1,4 @@
-module_name = 'particles'
+module_name = 'Particles'
 
 dependencies = [
     'glib-2.0',
@@ -6,7 +6,7 @@ dependencies = [
 ]
 
 aml_dependencies = [
-    'core',
+    'Core',
 ]
 
 sources = files(
@@ -40,7 +40,7 @@ g_ir_args = [
 module_dict = {}
 
 module_dict += { 'module_name': module_name }
-module_dict += { 'extless_name': meson.project_name() + module_name[0].to_upper() + module_name.substring(1) + '-' + meson.project_version() }
+module_dict += { 'extless_name': meson.project_name() + module_name + '-' + meson.project_version() }
 module_dict += { 'lib_name': 'lib' + module_dict['extless_name'].to_lower() + '.so' }
 module_dict += { 'gir_name': module_dict['extless_name'] + '.gir' }
 module_dict += { 'typelib_name': module_dict['extless_name'] + '.typelib' }
