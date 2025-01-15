@@ -43,6 +43,7 @@ vala_args = [
 g_ir_args = [
 ]
 
+
 ############################
 # DO NOT CHANGE CODE BELOW #
 ############################
@@ -137,11 +138,6 @@ module_dict += { 'vapidir_args': _vapidir_args }
 vala_args += [ _girdir_args, _vapidir_args ]
 vala_args += _dependencies
 
-_aml_deps = []
-foreach dep : aml_dependencies
-    _aml_deps += modules[dep]['typelib_target']
-endforeach
-
 foreach dep : aml_dependencies
     g_ir_args += '--includedir=' + modules[dep]['build_dir']
 endforeach
@@ -149,6 +145,11 @@ endforeach
 g_ir_args += '--output=' + module_dict['build_dir'] / module_dict['typelib_name']
 
 if compile_lib
+    _aml_deps = []
+    foreach dep : aml_dependencies
+        _aml_deps += modules[dep]['typelib_target']
+    endforeach
+
     module_dict += {
         'lib_target': custom_target(
             module_name + 'lib',
