@@ -13,7 +13,7 @@ foreach i, module : modules
     sources += module['sources']
     if compile_lib
         girdirs += '--girdir=' + module['build_dir']
-        girs += module['gir_target']
+        girs += module['typelib_target']
     endif
 endforeach
 

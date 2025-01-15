@@ -7,18 +7,12 @@ project(
 )
 
 compile_lib = get_option('lib')
-generate_typelib = get_option('typelib')
 generate_doc = get_option('doc')
 
 if compile_lib
     valac = find_program('valac')
-endif
-
-if generate_typelib
     g_ir_compiler = find_program('g-ir-compiler')
-    assert(compile_lib)
 endif
-
 
 modules = {}
 

@@ -1,6 +1,20 @@
-tests = { }
+tests = {
+    'Dummy': files('dummy.vala'),
+}
 
 subdir('datacollection')
+
+############################
+# DO NOT CHANGE CODE BELOW #
+############################
+
+_c_args = []
+foreach arg : module_dict['c_include_args']
+    _c_args += [ '-X', arg ]
+endforeach
+foreach arg : module_dict['c_link_args']
+    _c_args += [ '-X', arg ]
+endforeach
 
 foreach name, sources : tests
     test(
@@ -10,20 +24,20 @@ foreach name, sources : tests
             command: [
                 valac,
                 '--directory=' + meson.current_build_dir(),
-                '--vapidir=' + module_dict['build_dir'],
+                _girdir_args,
                 '--girdir=' + module_dict['build_dir'],
+                _vapidir_args,
+                '--vapidir=' + module_dict['build_dir'],
                 [ module_dict['dependencies'], '--pkg=' + module_dict['extless_name'] ],
                 '--output=' + name,
-                '-X', '-static-libasan',
+                _c_args,
                 '-X', '-I' + module_dict['build_dir'],
-                '-X', '-w',
-                module_dict['link_args'],
                 sources
             ],
             output: name,
             depends: module_dict['lib_target'],
+            build_by_default: true,
         ),
-      env: [ 'G_DEBUG=fatal_warnings' ]
+        env: [ 'G_DEBUG=fatal_warnings' ]
     )
 endforeach
-
