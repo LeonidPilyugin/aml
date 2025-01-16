@@ -17,6 +17,7 @@ sources = files(
     'src/dumpreader.vala',
     'src/dumpwriter.vala',
     'src/inputhelper.vala',
+    'src/presets.vala',
 )
 
 c_args = [

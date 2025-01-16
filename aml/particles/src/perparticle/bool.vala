@@ -147,32 +147,5 @@ namespace AmlParticles
         {
             return (BoolPerParticleProperty) this.copy();
         }
-
-       // public static BoolPerParticleProperty create_from(PerParticleProperty prop) throws PerParticlePropertyError.TYPE_ERROR
-       // {
-       //     bool[] arr = new bool[prop.get_size()];
-
-       //     if (prop is StringPerParticleProperty) {
-       //         StringPerParticleProperty temp_prop = (StringPerParticleProperty) prop;
-       //         for (uint i = 0; i < arr.length; i++)
-       //             if (!bool.try_parse(temp_prop.get_val(i), out arr[i]))
-       //                 throw new PerParticlePropertyError.TYPE_ERROR(@"Cannot parse string \"$(temp_prop.get_val(i))\" at index $i to boolean");
-       //     } else if (prop is Int64PerParticleProperty) {
-       //         Int64PerParticleProperty temp_prop = (Int64PerParticleProperty) prop;
-       //         for (uint i = 0; i < arr.length; i++)
-       //             arr[i] = temp_prop.get_val(i) != 0;
-       //     } else if (prop is Float64PerParticleProperty) {
-       //         Float64PerParticleProperty temp_prop = (Float64PerParticleProperty) prop;
-       //         for (uint i = 0; i < arr.length; i++)
-       //             arr[i] = temp_prop.get_val(i) != 0.0;
-       //     } else if (prop is BoolPerParticleProperty) {
-       //         BoolPerParticleProperty temp_prop = (BoolPerParticleProperty) prop;
-       //         arr = temp_prop.get_arr();
-       //     } else {
-       //         throw new PerParticlePropertyError.TYPE_ERROR("Unknown prop type");
-       //     }
-
-       //     return new BoolPerParticleProperty.from_array(arr);
-       // }
     }
 }

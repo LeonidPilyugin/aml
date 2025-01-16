@@ -8,11 +8,11 @@ namespace AmlLammpsIo
 {
     public class DumpWriterParams : ActionParams
     {
-        private string filepath = "";
-        private string particles_id = "";
-        private string box_id = "";
-        private string timestep_id = "";
-        private string time_id = "";
+        private string filepath = Presets.EMPTY_ID;
+        private string particles_id = Presets.EMPTY_ID;
+        private string box_id = Presets.EMPTY_ID;
+        private string timestep_id = Presets.EMPTY_ID;
+        private string time_id = Presets.EMPTY_ID;
         private string[] properties = {};
 
         public string get_filepath()
@@ -99,13 +99,13 @@ namespace AmlLammpsIo
 
             DumpWriterParams ps = (DumpWriterParams) params;
 
-            if (ps.get_particles_id() != "" && !DataCollection.is_valid_id(ps.get_particles_id()))
+            if (ps.get_particles_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_particles_id()))
                 return @"particles_id \"$(ps.get_particles_id())\" is not a valid id";
-            if (ps.get_box_id() != "" && !DataCollection.is_valid_id(ps.get_box_id()))
+            if (ps.get_box_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_box_id()))
                 return @"box_id \"$(ps.get_box_id())\" is not a valid id";
-            if (ps.get_timestep_id() != "" && !DataCollection.is_valid_id(ps.get_timestep_id()))
+            if (ps.get_timestep_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_timestep_id()))
                 return @"timestep_id \"$(ps.get_timestep_id())\" is not a valid id";
-            if (ps.get_time_id() != "" && !DataCollection.is_valid_id(ps.get_time_id()))
+            if (ps.get_time_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_time_id()))
                 return @"time_id \"$(ps.get_time_id())\" is not a valid id";
 
             return "";
@@ -122,16 +122,73 @@ namespace AmlLammpsIo
             string time_id = params.get_time_id();
             string[] properties = params.get_properties();
 
-            // TODO: exceptions
-            // TODO: replace /* == "" */ with better code
-            // TODO: type casting and checking
-            Particles? particles = particles_id == "" ? null : (Particles) data.get_element(particles_id);
-            ParallelepipedBox? box = box_id == "" ? null : (ParallelepipedBox) data.get_element(box_id);
-            double? time = time_id == "" ? null : (double?) ((Float64) data.get_element(time_id)).get_val();
-            int64? timestep = timestep_id == "" ? null : (int64?) ((Int64) data.get_element(timestep_id)).get_val();
+            DataObject precast;
+            Particles? particles = null;
+            if (particles_id != Presets.EMPTY_ID)
+            {
+                if (!data.has_element(particles_id))
+                    throw new ActionError.LOGIC_ERROR(@"Data does not contain element \"$particles_id\"");
+                precast = data.get_element(particles_id);
+                if (!(precast is Particles))
+                    throw new ActionError.LOGIC_ERROR(@"Element \"$particles_id\" is not instance of Particles");
+                particles = (Particles) precast;
+            }
+
+            ParallelepipedBox? box = null;
+            if (box_id != Presets.EMPTY_ID)
+            {
+                if (!data.has_element(box_id))
+                    throw new ActionError.LOGIC_ERROR(@"Data does not contain element \"$box_id\"");
+                precast = data.get_element(box_id);
+                if (!(precast is ParallelepipedBox))
+                    throw new ActionError.LOGIC_ERROR(@"Element \"$box_id\" is not instance of ParallelepipedBox");
+                box = (ParallelepipedBox) precast;
+            }
+
+            double? time = null;
+            if (time_id != Presets.EMPTY_ID)
+            {
+                if (!data.has_element(time_id))
+                    throw new ActionError.LOGIC_ERROR(@"Data does not contain element \"$time_id\"");
+                precast = data.get_element(time_id);
+                if (!(precast is Float64))
+                    throw new ActionError.LOGIC_ERROR(@"Element \"$time_id\" is not instance of Float64 basic type");
+                time = ((Float64) precast).get_val();
+            }
+
+            int64? timestep = null;
+            if (timestep_id != Presets.EMPTY_ID)
+            {
+                if (!data.has_element(timestep_id))
+                    throw new ActionError.LOGIC_ERROR(@"Data does not contain element \"$timestep_id\"");
+                precast = data.get_element(timestep_id);
+                if (!(precast is Int64))
+                    throw new ActionError.LOGIC_ERROR(@"Element \"$timestep_id\" is not instance of Int64 basic type");
+                time = ((Int64) precast).get_val();
+            }
+
+            StringPerParticleProperty[] props = new StringPerParticleProperty[properties.length];
+            if (particles != null)
+            {
+                for (uint i = 0; i < props.length; i++)
+                {
+                    if (!particles.has_prop(properties[i]))
+                        throw new ActionError.LOGIC_ERROR(@"Particles does not contain property \"$(properties[i])\"");
+                    var precast_ppp = particles.get_prop(properties[i]);
+                    if (!(precast_ppp is ConvertableToString))
+                        throw new ActionError.LOGIC_ERROR(@"Element \"$(properties[i])\" is not instance of ConvertableToString");
+                    props[i] = ((ConvertableToString) precast_ppp).convert_to_string();
+                }
+            }
             
-            // TODO: path checking, exceptions
-            var output = new DataOutputStream(File.new_for_path(filepath).replace_readwrite(null, false, FileCreateFlags.PRIVATE).output_stream);
+            DataOutputStream output;
+            try
+            {
+                output = new DataOutputStream(File.new_for_path(filepath).replace_readwrite(null, false, FileCreateFlags.PRIVATE).output_stream);
+            } catch(Error e)
+            {
+                throw new ActionError.LOGIC_ERROR(@"Cannot open file \"$filepath\" for write: $(e.message)");
+            }
 
             if (time != null)
                 output.put_string(@"ITEM: TIME\n$time\n");
@@ -167,17 +224,9 @@ namespace AmlLammpsIo
             }
             if (particles != null)
             {
-                StringPerParticleProperty[] props = new StringPerParticleProperty[properties.length];
-
                 output.put_string("ITEM: ATOMS ");
-
                 for (uint i = 0; i < props.length; i++)
-                {
-                    // TODO: exceptions
-                    var temp = (ConvertableToString) particles.get_prop(properties[i]);
-                    props[i] = temp.convert_to_string();
                     output.put_string(@"$(properties[i]) ");
-                }
                 output.put_string("\n");
 
                 for (uint i = 0; i < particles.get_size(); i++)

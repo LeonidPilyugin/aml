@@ -8,11 +8,11 @@ namespace AmlLammpsIo
 {
     public class DumpReaderParams : ActionParams
     {
-        private string filepath = "";
-        private string particles_id = "";
-        private string box_id = "";
-        private string timestep_id = "";
-        private string time_id = "";
+        private string filepath = Presets.EMPTY_ID;
+        private string particles_id = Presets.EMPTY_ID;
+        private string box_id = Presets.EMPTY_ID;
+        private string timestep_id = Presets.EMPTY_ID;
+        private string time_id = Presets.EMPTY_ID;
         private HashTable<string, Type> properties = new HashTable<string, Type>(str_hash, str_equal);
 
         public string get_filepath()
@@ -68,10 +68,6 @@ namespace AmlLammpsIo
         public unowned HashTable<string, Type> get_properties()
         {
             return this.properties;
-            //var res = new HashTable<string, Type>(str_hash, str_equal);
-            //foreach (var key in this.properties.get_keys())
-            //    res.set(key, this.properties.get(key));
-            //return res;
         }
 
         public void set_properties(owned HashTable<string, Type> properties)
@@ -110,13 +106,13 @@ namespace AmlLammpsIo
             if(!file.query_exists())
                 return @"Path \"$(ps.get_filepath())\" does not exist";
 
-            if (ps.get_particles_id() != "" && !DataCollection.is_valid_id(ps.get_particles_id()))
+            if (ps.get_particles_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_particles_id()))
                 return @"particles_id \"$(ps.get_particles_id())\" is not a valid id";
-            if (ps.get_box_id() != "" && !DataCollection.is_valid_id(ps.get_box_id()))
+            if (ps.get_box_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_box_id()))
                 return @"box_id \"$(ps.get_box_id())\" is not a valid id";
-            if (ps.get_timestep_id() != "" && !DataCollection.is_valid_id(ps.get_timestep_id()))
+            if (ps.get_timestep_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_timestep_id()))
                 return @"timestep_id \"$(ps.get_timestep_id())\" is not a valid id";
-            if (ps.get_time_id() != "" && !DataCollection.is_valid_id(ps.get_time_id()))
+            if (ps.get_time_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_time_id()))
                 return @"time_id \"$(ps.get_time_id())\" is not a valid id";
 
             HashTable<string, Type> props = ps.get_properties();
@@ -145,10 +141,10 @@ namespace AmlLammpsIo
 
             var properties = params.get_properties();
 
-            bool load_particles = particles_id != "";
-            bool load_box = box_id != "";
-            bool load_time = time_id != "";
-            bool load_timestep  = timestep_id != "";
+            bool load_particles = particles_id != Presets.EMPTY_ID;
+            bool load_box = box_id != Presets.EMPTY_ID;
+            bool load_time = time_id != Presets.EMPTY_ID;
+            bool load_timestep  = timestep_id != Presets.EMPTY_ID;
 
             var input_stream = new DataInputStream(File.new_for_path(filepath).read());
             var input = new InputHelper(input_stream);

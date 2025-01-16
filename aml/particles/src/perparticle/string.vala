@@ -159,34 +159,5 @@ namespace AmlParticles
             var temp = prop.convert_to_string();
             this.array = temp.array;
         }
-
-
-
-       // public static StringPerParticleProperty create_from(PerParticleProperty prop) throws PerParticlePropertyError.TYPE_ERROR
-       // {
-       //     string[] arr = new string[prop.get_size()];
-
-       //     if (prop is StringPerParticleProperty) {
-       //         StringPerParticleProperty temp_prop = (StringPerParticleProperty) prop;
-       //         arr = temp_prop.get_arr();
-       //     } else if (prop is Int64PerParticleProperty) {
-       //         Int64PerParticleProperty temp_prop = (Int64PerParticleProperty) prop;
-       //         for (uint i = 0; i < arr.length; i++)
-       //             arr[i] = temp_prop.get_val(i).to_string();
-       //     } else if (prop is Float64PerParticleProperty) {
-       //         Float64PerParticleProperty temp_prop = (Float64PerParticleProperty) prop;
-       //         for (uint i = 0; i < arr.length; i++)
-       //             arr[i] = temp_prop.get_val(i).to_string();
-       //     } else if (prop is BoolPerParticleProperty) {
-       //         BoolPerParticleProperty temp_prop = (BoolPerParticleProperty) prop;
-       //         for (uint i = 0; i < arr.length; i++)
-       //             arr[i] = temp_prop.get_val(i).to_string();
-       //         
-       //     } else {
-       //         throw new PerParticlePropertyError.TYPE_ERROR("Unknown prop type");
-       //     }
-
-       //     return new StringPerParticleProperty.from_array(arr);
-       // }
     }
 }

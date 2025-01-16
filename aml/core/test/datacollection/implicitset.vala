@@ -7,6 +7,7 @@ public static int main(string[] args)
     a.set_element("el", b);
     try {
         b.set_element("el", a);
+        assert_not_reached();
     } catch (DataCollectionError.SELF_SET_ERROR e) { }
     return 0;    
 }
