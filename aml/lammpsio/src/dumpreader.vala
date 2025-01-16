@@ -13,6 +13,7 @@ namespace AmlLammpsIo
         private string box_id = Presets.EMPTY_ID;
         private string timestep_id = Presets.EMPTY_ID;
         private string time_id = Presets.EMPTY_ID;
+        private string units_id = Presets.EMPTY_ID;
         private HashTable<string, Type> properties = new HashTable<string, Type>(str_hash, str_equal);
 
         public string get_filepath()
@@ -65,6 +66,16 @@ namespace AmlLammpsIo
             this.time_id = time_id;
         }
 
+        public string get_units_id()
+        {
+            return this.units_id;
+        }
+
+        public void set_units_id(string units_id)
+        {
+            this.units_id = units_id;
+        }
+
         public unowned HashTable<string, Type> get_properties()
         {
             return this.properties;
@@ -84,6 +95,7 @@ namespace AmlLammpsIo
             res.box_id = this.box_id;
             res.timestep_id = this.timestep_id;
             res.time_id = this.time_id;
+            res.units_id = this.units_id;
             res.properties = new HashTable<string, Type>(str_hash, str_equal);
             foreach (var key in this.properties.get_keys())
                 res.properties.set(key, this.properties.get(key));
@@ -114,6 +126,8 @@ namespace AmlLammpsIo
                 return @"timestep_id \"$(ps.get_timestep_id())\" is not a valid id";
             if (ps.get_time_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_time_id()))
                 return @"time_id \"$(ps.get_time_id())\" is not a valid id";
+            if (ps.get_units_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_units_id()))
+                return @"units_id \"$(ps.get_units_id())\" is not a valid id";
 
             HashTable<string, Type> props = ps.get_properties();
             foreach (unowned var key in props.get_keys())
@@ -138,6 +152,7 @@ namespace AmlLammpsIo
             string box_id = params.get_box_id();
             string time_id = params.get_time_id();
             string timestep_id = params.get_timestep_id();
+            string units_id = params.get_units_id();
 
             var properties = params.get_properties();
 
@@ -145,6 +160,7 @@ namespace AmlLammpsIo
             bool load_box = box_id != Presets.EMPTY_ID;
             bool load_time = time_id != Presets.EMPTY_ID;
             bool load_timestep  = timestep_id != Presets.EMPTY_ID;
+            bool load_units  = units_id != Presets.EMPTY_ID;
 
             var input_stream = new DataInputStream(File.new_for_path(filepath).read());
             var input = new InputHelper(input_stream);
@@ -153,6 +169,7 @@ namespace AmlLammpsIo
             bool ok = true;
             int64? timestep = null;
             double? time = null;
+            string? units = null;
             string[] temp_split;
             bool[] bx;
             double[,] px;
@@ -161,7 +178,11 @@ namespace AmlLammpsIo
             while (input.read_line() != null)
             {
                 ok = true;
-                if (load_timestep && input.line == "ITEM: TIMESTEP")
+                if (load_units && input.line == "ITEM: UNITS")
+                {
+                    units = input.read_line();
+                    if (units == null) break;
+                } else if (load_timestep && input.line == "ITEM: TIMESTEP")
                 {
                     if (!load_timestep)
                     {
@@ -474,6 +495,19 @@ namespace AmlLammpsIo
                 } catch (DataCollectionError.ID_ERROR e)
                 {
                     throw new ActionError.LOGIC_ERROR(@"Cannot set element \"$particles_id\"");
+                }
+            }
+            if (load_units)
+            {
+                if (units == null)
+                    throw new ActionError.LOGIC_ERROR(@"File \"$filepath\" does not have UNITS section");
+                var obj = new String.create((!) units);
+                try
+                {
+                    data.set_element(units_id, obj);
+                } catch (DataCollectionError.ID_ERROR e)
+                {
+                    throw new ActionError.LOGIC_ERROR(@"Cannot set element \"$units_id\"");
                 }
             }
         }

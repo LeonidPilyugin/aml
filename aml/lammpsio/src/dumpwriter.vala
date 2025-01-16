@@ -13,6 +13,7 @@ namespace AmlLammpsIo
         private string box_id = Presets.EMPTY_ID;
         private string timestep_id = Presets.EMPTY_ID;
         private string time_id = Presets.EMPTY_ID;
+        private string units_id = Presets.EMPTY_ID;
         private string[] properties = {};
 
         public string get_filepath()
@@ -65,6 +66,16 @@ namespace AmlLammpsIo
             this.time_id = time_id;
         }
 
+        public string get_units_id()
+        {
+            return this.units_id;
+        }
+
+        public void set_units_id(string units_id)
+        {
+            this.units_id = units_id;
+        }
+
         public unowned string[] get_properties()
         {
             return this.properties;
@@ -84,6 +95,7 @@ namespace AmlLammpsIo
             res.box_id = this.box_id;
             res.timestep_id = this.timestep_id;
             res.time_id = this.time_id;
+            res.units_id = this.units_id;
             res.properties = this.properties;
 
             return res;
@@ -107,6 +119,8 @@ namespace AmlLammpsIo
                 return @"timestep_id \"$(ps.get_timestep_id())\" is not a valid id";
             if (ps.get_time_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_time_id()))
                 return @"time_id \"$(ps.get_time_id())\" is not a valid id";
+            if (ps.get_units_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_units_id()))
+                return @"units_id \"$(ps.get_units_id())\" is not a valid id";
 
             return "";
         }
@@ -120,6 +134,7 @@ namespace AmlLammpsIo
             string box_id = params.get_box_id();
             string timestep_id = params.get_timestep_id();
             string time_id = params.get_time_id();
+            string units_id = params.get_units_id();
             string[] properties = params.get_properties();
 
             DataObject precast;
@@ -167,6 +182,17 @@ namespace AmlLammpsIo
                 time = ((Int64) precast).get_val();
             }
 
+            string? units = null;
+            if (units_id != Presets.EMPTY_ID)
+            {
+                if (!data.has_element(units_id))
+                    throw new ActionError.LOGIC_ERROR(@"Data does not contain element \"$units_id\"");
+                precast = data.get_element(units_id);
+                if (!(precast is String))
+                    throw new ActionError.LOGIC_ERROR(@"Element \"$units_id\" is not instance of String basic type");
+                units = ((String) precast).get_val();
+            }
+
             StringPerParticleProperty[] props = new StringPerParticleProperty[properties.length];
             if (particles != null)
             {
@@ -192,6 +218,8 @@ namespace AmlLammpsIo
 
             if (time != null)
                 output.put_string(@"ITEM: TIME\n$time\n");
+            if (units != null)
+                output.put_string(@"ITEM: UNITS\n$units\n");
             if (timestep != null)
                 output.put_string(@"ITEM: TIMESTEP\n$timestep\n");
             if (particles != null)
