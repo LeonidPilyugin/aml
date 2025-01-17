@@ -6,113 +6,14 @@ using AmlMath;
 
 namespace AmlLammpsIo
 {
-    public class DumpReaderParams : ActionParams
-    {
-        private string filepath = Presets.EMPTY_ID;
-        private string particles_id = Presets.EMPTY_ID;
-        private string box_id = Presets.EMPTY_ID;
-        private string timestep_id = Presets.EMPTY_ID;
-        private string time_id = Presets.EMPTY_ID;
-        private string units_id = Presets.EMPTY_ID;
-        private HashTable<string, Type> properties = new HashTable<string, Type>(str_hash, str_equal);
-
-        public string get_filepath()
-        {
-            return this.filepath;
-        }
-
-        public void set_filepath(string filepath)
-        {
-            this.filepath = filepath;
-        }
-
-        public string get_particles_id()
-        {
-            return this.particles_id;
-        }
-
-        public void set_particles_id(string particles_id)
-        {
-            this.particles_id = particles_id;
-        }
-
-        public string get_box_id()
-        {
-            return this.box_id;
-        }
-
-        public void set_box_id(string box_id)
-        {
-            this.box_id = box_id;
-        }
-
-        public string get_timestep_id()
-        {
-            return this.timestep_id;
-        }
-
-        public void set_timestep_id(string timestep_id)
-        {
-            this.timestep_id = timestep_id;
-        }
-
-        public string get_time_id()
-        {
-            return this.time_id;
-        }
-
-        public void set_time_id(string time_id)
-        {
-            this.time_id = time_id;
-        }
-
-        public string get_units_id()
-        {
-            return this.units_id;
-        }
-
-        public void set_units_id(string units_id)
-        {
-            this.units_id = units_id;
-        }
-
-        public unowned HashTable<string, Type> get_properties()
-        {
-            return this.properties;
-        }
-
-        public void set_properties(owned HashTable<string, Type> properties)
-        {
-            this.properties = (owned) properties;
-        }
-
-        public override ActionParams copy()
-        {
-            var res = new DumpReaderParams();
-
-            res.filepath = this.filepath;
-            res.particles_id = this.particles_id;
-            res.box_id = this.box_id;
-            res.timestep_id = this.timestep_id;
-            res.time_id = this.time_id;
-            res.units_id = this.units_id;
-            res.properties = new HashTable<string, Type>(str_hash, str_equal);
-            foreach (var key in this.properties.get_keys())
-                res.properties.set(key, this.properties.get(key));
-
-            return res;
-        }
-    }
-
-
     public class DumpReader : AmlCore.Action
     {
         protected override string get_params_error_message(ActionParams params)
         {
-            if (!(params is DumpReaderParams))
-                return "Params shoud be instance of AmlLammpsIo.DumpReaderParams";
+            if (!(params is ReaderParams))
+                return "Params shoud be instance of AmlLammpsIo.ReaderParams";
 
-            DumpReaderParams ps = (DumpReaderParams) params;
+            ReaderParams ps = (ReaderParams) params;
 
             var file = File.new_for_path(ps.get_filepath());
             if(!file.query_exists())
@@ -142,9 +43,247 @@ namespace AmlLammpsIo
             return "";
         }
 
+        private void read_units(InputHelper input, ref string? units) throws ActionError
+        {
+            if (units != null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): units are already set");
+
+            units = input.read_line();
+            
+            if (units == null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): unexpected EOF");
+        }
+
+        private void read_timestep(InputHelper input, ref int64? timestep) throws ActionError
+        {
+            if (timestep != null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): timestep is already set");
+
+            if (input.read_line() == null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): unexpected EOF");
+
+            if (!int64.try_parse(input.line, out timestep))
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse timestep");
+        }
+
+        private void read_time(InputHelper input, ref double? time) throws ActionError
+        {
+            if (time != null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): time is already set");
+
+            if (input.read_line() == null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): unexpected EOF");
+
+            if (!double.try_parse(input.line, out time))
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse time");
+        }
+
+        private void read_box_triclinic(InputHelper input, ref Box? box) throws ActionError
+        {
+            if (box != null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): box is already set");
+
+            var temp_split = input.line.split_set(" \t");
+            if (temp_split.length != 12)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary conditions");
+
+            temp_split = temp_split[9:];
+
+            var bx = new bool[3];
+            for (uint8 i = 0; i < 3; i++)
+                bx[i] = temp_split[i] == "pp";
+
+            var px = new double[3,3];
+            for (uint8 i = 0; i < 3; i++)
+            {
+                if (input.read_line() == null)
+                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): unexpected EOF");
+                temp_split = input.line.split_set(" \t");
+                if (temp_split.length != 4)
+                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary parameters");
+                for (uint8 j = 0; j < 3; j++)
+                    if (!double.try_parse(temp_split[j], out px[i,j]))
+                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse boundaries");
+            }
+            px[0,0] -= double.min(double.min(double.min(px[0,2], px[1,2]), px[0,2] + px[1,2]), 0.0);
+            px[1,0] -= double.max(double.max(double.max(px[0,2], px[0,1]), px[0,2] + px[1,2]), 0.0);
+            px[0,1] -= double.min(px[2,2], 0.0);
+            px[1,1] -= double.max(px[2,2], 0.0);
+
+            var edge = new Matrix.sized(3, 3);
+
+            edge.set_val(0, 0, px[1,0] - px[0,0]);
+            edge.set_val(1, 0, px[0,2]);
+            edge.set_val(1, 1, px[1,1] - px[0,1]);
+            edge.set_val(2, 0, px[1,2]);
+            edge.set_val(2, 1, px[2,2]);
+            edge.set_val(2, 2, px[1,2] - px[0,2]);
+
+            var origin = new Vector.sized(3);
+
+            for (uint8 i = 0; i < 3; i++)
+                origin.set_val(i, px[0,i]);
+
+            try
+            {
+                box = new ParallelepipedBox.create(edge, origin, bx);
+            } catch (ParallelepipedBoxError e)
+            {
+                throw new ActionError.LOGIC_ERROR("Invalid simulation box data");
+            }
+        }
+
+        private void read_box_abc_origin(InputHelper input, ref Box? box) throws ActionError
+        {
+            if (box != null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): box is already set");
+            
+            var temp_split = input.line.split_set(" \t");
+            if (temp_split.length != 8)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary conditions");
+            temp_split = temp_split[5:];
+
+            var bx = new bool[3];
+            for (uint8 i = 0; i < 3; i++)
+                bx[i] = temp_split[i] == "pp";
+
+            var px = new double[3,4];
+            for (uint8 i = 0; i < 3; i++)
+            {
+                if (input.read_line() == null)
+                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): unexpected EOF");
+                temp_split = input.line.split_set(" \t");
+                if (temp_split.length != 4)
+                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary parameters");
+                for (uint8 j = 0; j < 4; j++)
+                    if (!double.try_parse(temp_split[j], out px[i,j]))
+                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse boundaries");
+            }
+
+            var origin = new Vector.sized(3);
+            var edge = new Matrix.sized(3, 3);
+            for (uint8 i = 0; i < 3; i++)
+            {
+                origin.set_val(i, px[i,3]);
+                for (uint8 j = 0; j < 3; j++)
+                    edge.set_val(i, j, px[i,j]);
+            }
+
+            try
+            {
+                box = new ParallelepipedBox.create(edge, origin, bx);
+            } catch (ParallelepipedBoxError e)
+            {
+                throw new ActionError.LOGIC_ERROR("Invalid simulation box data");
+            }
+        }
+
+        private void read_box(InputHelper input, ref Box? box) throws ActionError
+        {
+            if (box != null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): box is already set");
+
+            var temp_split = input.line.split_set(" \t");
+            if (temp_split.length != 6)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary conditions");
+            temp_split = temp_split[3:];
+
+            var bx = new bool[3];
+
+            for (uint8 i = 0; i < 3; i++)
+                bx[i] = temp_split[i] == "pp";
+
+            var px = new double[3,2];
+            for (uint8 i = 0; i < 3; i++)
+            {
+                if (input.read_line() == null)
+                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): unexpected EOF");
+
+                temp_split = input.line.split_set(" \t");
+                if (temp_split.length != 2)
+                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid bounds number");
+                for (uint8 j = 0; j < 2; j++)
+                    if (!double.try_parse(temp_split[j], out px[i,j]))
+                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse boundaries");
+            }
+
+            var edge = new Matrix.sized(3, 3);
+            var origin = new Vector.sized(3);
+            for (uint8 i = 0; i < 3; i++)
+            {
+                edge.set_val(i, i, px[i,1] - px[i,0]);
+                origin.set_val(i, px[i,0]);
+            }
+
+            try
+            {
+                box = new ParallelepipedBox.create(edge, origin, bx);
+            } catch (ParallelepipedBoxError e)
+            {
+                throw new ActionError.LOGIC_ERROR("Invalid simulation box data");
+            }
+        }
+
+        private void read_particles_n(InputHelper input, ref uint? particles_n) throws ActionError
+        {
+            if (particles_n != null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): number of particles is already set");
+
+            if (input.read_line() == null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): unexpected EOF");
+
+            if (!uint.try_parse(input.line, out particles_n))
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse number of particles");
+        }
+
+        private void read_particles(InputHelper input, uint? particles_n, unowned HashTable<string, Type> properties, ref Particles? particles) throws ActionError
+        {
+            if (particles != null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): particles are already set");
+            if (particles_n == null)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): number of particles is not set");
+            particles = new Particles.sized(particles_n);
+
+            var temp_split = input.line.split_set(" \t");
+            if (temp_split.length < 3)
+                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): no per-particle property ids");
+
+            var keys = temp_split[2:];
+            var props = new StringPerParticleProperty?[keys.length];
+            for (uint i = 0; i < keys.length; i++)
+            {
+                props[i] = (keys[i] in properties) ? new StringPerParticleProperty() : null;
+                for (uint j = i + 1; j < keys.length; j++)
+                    if (keys[i] == keys[j])
+                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): repeating property %s");
+                props[i]?.set_size(particles.get_size());
+            }
+
+            for (uint i = 0; i < particles.get_size(); i++)
+            {
+                if (input.read_line() == null) throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): unexpected EOF");
+                temp_split = input.line.split_set(" \t");
+                if (temp_split.length != keys.length)
+                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid property number");
+                for (uint j = 0; j < keys.length; j++)
+                    props[j]?.set_val(i, temp_split[j]);
+            }
+
+            for (uint i = 0; i < keys.length; i++)
+            {
+                if (props[i] != null)
+                {
+                    var new_prop_type = properties.get(keys[i]);
+                    var new_obj = (PerParticleProperty) Object.new(new_prop_type);
+                    new_obj.replace_with(props[i]);
+                    particles.set_prop(keys[i], new_obj);
+                }
+            }
+        }
+
         public override void perform(DataCollection data) throws ActionError
         {
-            DumpReaderParams params = (DumpReaderParams) this.get_params();
+            ReaderParams params = (ReaderParams) this.get_params();
 
             string filepath = params.get_filepath();
 
@@ -162,288 +301,44 @@ namespace AmlLammpsIo
             bool load_timestep  = timestep_id != Presets.EMPTY_ID;
             bool load_units  = units_id != Presets.EMPTY_ID;
 
-            var input_stream = new DataInputStream(File.new_for_path(filepath).read());
-            var input = new InputHelper(input_stream);
+            var input = new InputHelper(filepath);
+
             Box? box = null;
             Particles? particles = null;
             bool ok = true;
             int64? timestep = null;
             double? time = null;
             string? units = null;
-            string[] temp_split;
-            bool[] bx;
-            double[,] px;
+            uint? particles_n = null;
 
             // read
             while (input.read_line() != null)
             {
                 ok = true;
                 if (load_units && input.line == "ITEM: UNITS")
-                {
-                    units = input.read_line();
-                    if (units == null) break;
-                } else if (load_timestep && input.line == "ITEM: TIMESTEP")
-                {
-                    if (!load_timestep)
-                    {
-                        while (input.read_line() != null) if (input.line[:5] == "ITEM:") break;
-                        input.prev_line();
-                        continue;
-                    }
-
-                    if (timestep != null)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): timestep is already set");
-
-                    if (input.read_line() == null) break;
-
-                    if (!int64.try_parse(input.line, out timestep))
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid timestep value");
-                } else if (input.line == "ITEM: TIME")
-                {
-                    if (!load_time)
-                    {
-                        while (input.read_line() != null) if (input.line[:5] == "ITEM:") break;
-                        input.prev_line();
-                        continue;
-                    }
-
-                    if (time != null)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): time is already set");
-
-                    if (input.read_line() == null) break;
-
-                    if (!double.try_parse(input.line, out time))
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid time value");
-                } else if (input.line.length > 34 && input.line[:34] == "ITEM: BOX BOUNDS xy xz yz xx yy zz")
-                {
-                    if (!load_box)
-                    {
-                        while (input.read_line() != null) if (input.line[:5] == "ITEM:") break;
-                        input.prev_line();
-                        continue;
-                    }
-
-                    if (box != null)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): box is already set");
-
-                    temp_split = input.line.split_set(" \t");
-                    if (temp_split.length != 12)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary conditions");
-
-                    temp_split = temp_split[9:];
-
-                    bx = new bool[3];
-                    for (uint8 i = 0; i < 3; i++)
-                        bx[i] = temp_split[i] == "pp";
-                    px = new double[3,3];
-                    for (uint8 i = 0; i < 3; i++)
-                    {
-                        if (input.read_line() == null) { ok = false; break; }
-                        temp_split = input.line.split_set(" \t");
-                        if (temp_split.length != 4)
-                            throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary parameters");
-                        for (uint8 j = 0; j < 3; j++)
-                            if (!double.try_parse(temp_split[j], out px[i,j]))
-                                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse boundaries");
-                    } if (!ok) break;
-
-                    px[0,0] -= double.min(double.min(double.min(px[0,2], px[1,2]), px[0,2] + px[1,2]), 0.0);
-                    px[1,0] -= double.max(double.max(double.max(px[0,2], px[0,1]), px[0,2] + px[1,2]), 0.0);
-                    px[0,1] -= double.min(px[2,2], 0.0);
-                    px[1,1] -= double.max(px[2,2], 0.0);
-
-                    var edge = new Matrix.sized(3, 3);
-
-                    edge.set_val(0, 0, px[1,0] - px[0,0]);
-                    edge.set_val(1, 0, px[0,2]);
-                    edge.set_val(1, 1, px[1,1] - px[0,1]);
-                    edge.set_val(2, 0, px[1,2]);
-                    edge.set_val(2, 1, px[2,2]);
-                    edge.set_val(2, 2, px[1,2] - px[0,2]);
-
-                    var origin = new Vector.sized(3);
-
-                    for (uint8 i = 0; i < 3; i++)
-                        origin.set_val(i, px[0,i]);
-
-                    try
-                    {
-                        box = new ParallelepipedBox.create(edge, origin, bx);
-                    } catch (ParallelepipedBoxError e)
-                    {
-                        throw new ActionError.LOGIC_ERROR("Invalid simulation box data");
-                    }
-                } else if (input.line.length > 27 && input.line[:27] == "ITEM: BOX BOUNDS abc origin") {
-                    if (!load_box)
-                    {
-                        while (input.read_line() != null) if (input.line[:5] == "ITEM:") break;
-                        input.prev_line();
-                        continue;
-                    }
-
-                    // parse box
-                    if (box != null)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): box is already set");
-
-                    temp_split = input.line.split_set(" \t");
-                    if (temp_split.length != 8)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary conditions");
-                    temp_split = temp_split[5:];
-
-                    bx = new bool[3];
-                    for (uint8 i = 0; i < 3; i++)
-                        bx[i] = temp_split[i] == "pp";
-
-                    px = new double[3,4];
-                    for (uint8 i = 0; i < 3; i++)
-                    {
-                        if (input.read_line() == null) { ok = false; break; }
-                        temp_split = input.line.split_set(" \t");
-                        if (temp_split.length != 4)
-                            throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary parameters");
-                        for (uint8 j = 0; j < 4; j++)
-                            if (!double.try_parse(temp_split[j], out px[i,j]))
-                                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse boundaries");
-                    } if (!ok) break;
-
-                    var origin = new Vector.sized(3);
-                    var edge = new Matrix.sized(3, 3);
-                    for (uint8 i = 0; i < 3; i++)
-                    {
-                        origin.set_val(i, px[i,3]);
-                        for (uint8 j = 0; j < 3; j++)
-                            edge.set_val(i, j, px[i,j]);
-                    }
-
-                    try
-                    {
-                        box = new ParallelepipedBox.create(edge, origin, bx);
-                    } catch (ParallelepipedBoxError e)
-                    {
-                        throw new ActionError.LOGIC_ERROR("Invalid simulation box data");
-                    }
-                } else if (input.line.length > 15 && input.line[:16] == "ITEM: BOX BOUNDS") {
-                    if (!load_box)
-                    {
-                        while (input.read_line() != null) if (input.line[:5] == "ITEM:") break;
-                        input.prev_line();
-                        continue;
-                    }
-
-                    // parse box
-                    if (box != null)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): box is already set");
-
-                    temp_split = input.line.split_set(" \t");
-                    if (temp_split.length != 6)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid number of boundary conditions");
-                    temp_split = temp_split[3:];
-
-                    bx = new bool[3];
-
-                    for (uint8 i = 0; i < 3; i++)
-                        bx[i] = temp_split[i] == "pp";
-
-                    px = new double[3,2];
-                    for (uint8 i = 0; i < 3; i++)
-                    {
-                        if (input.read_line() == null) { ok = false; break; }
-                        temp_split = input.line.split_set(" \t");
-                        if (temp_split.length != 2)
-                            throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid bounds number");
-                        for (uint8 j = 0; j < 2; j++)
-                            if (!double.try_parse(temp_split[j], out px[i,j]))
-                                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse boundaries");
-                    } if (!ok) break;
-
-                    var edge = new Matrix.sized(3, 3);
-                    var origin = new Vector.sized(3);
-                    for (uint8 i = 0; i < 3; i++)
-                    {
-                        edge.set_val(i, i, px[i,1] - px[i,0]);
-                        origin.set_val(i, px[i,0]);
-                    }
-
-                    try
-                    {
-                        box = new ParallelepipedBox.create(edge, origin, bx);
-                    } catch (ParallelepipedBoxError e)
-                    {
-                        throw new ActionError.LOGIC_ERROR("Invalid simulation box data");
-                    }
-                } else if (input.line == "ITEM: NUMBER OF ATOMS")
-                {
-                    if (!load_particles)
-                    {
-                        while (input.read_line() != null) if (input.line[:5] == "ITEM:") break;
-                        input.prev_line();
-                        continue;
-                    }
-
-                    if (particles != null)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): number of particles is already set");
-                    if (input.read_line() == null) break;
-                    uint temp_an;
-                    if (!uint.try_parse(input.line, out temp_an))
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): cannot parse number of particles");
-                    particles = new Particles.sized(temp_an);
-                } else if (input.line.length > 10 && input.line[:11] == "ITEM: ATOMS")
-                {
-                    if (!load_particles)
-                    {
-                        while (input.read_line() != null) if (input.line[:5] == "ITEM:") break;
-                        input.prev_line();
-                        continue;
-                    }
-
-                    // parse particles and construct frame
-                    if (particles == null)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): number of particles is not set");
-                    // get property names
-                    temp_split = input.line.split_set(" \t");
-                    if (temp_split.length < 3)
-                        throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): no per-particle property ids");
-
-                    string[] keys = temp_split[2:];
-                    StringPerParticleProperty?[] props = new StringPerParticleProperty?[keys.length];
-
-                    for (uint i = 0; i < keys.length; i++)
-                    {
-                        props[i] = (keys[i] in properties) ? new StringPerParticleProperty() : null;
-                        for (uint j = i + 1; j < keys.length; j++)
-                            if (keys[i] == keys[j])
-                                throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): repeating property %s");
-                        props[i]?.set_size(particles.get_size());
-                    }
-
-                    for (uint i = 0; i < particles.get_size(); i++)
-                    {
-                        if (input.read_line() == null) { ok = false; break; }
-                        temp_split = input.line.split_set(" \t");
-                        if (temp_split.length != keys.length)
-                            throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): invalid property number");
-                        for (uint j = 0; j < keys.length; j++)
-                            props[j]?.set_val(i, temp_split[j]);
-                    } if (!ok) break;
-
-                    for (uint i = 0; i < keys.length; i++)
-                    {
-                        if (props[i] != null)
-                        {
-                            var new_prop_type = properties.get(keys[i]);
-                            var new_obj = (PerParticleProperty) Object.new(new_prop_type);
-                            new_obj.replace_with(props[i]);
-                            particles.set_prop(keys[i], new_obj);
-                        }
-                    }
-                } else if (input.line.length > 4 && input.line[:5] == "ITEM:")
+                    this.read_units(input, ref units);
+                else if (load_timestep && input.line == "ITEM: TIMESTEP")
+                    this.read_timestep(input, ref timestep);
+                else if (load_time && input.line == "ITEM: TIME")
+                    this.read_time(input, ref time);
+                else if (load_box && input.line.length > 34 && input.line[:34] == "ITEM: BOX BOUNDS xy xz yz xx yy zz")
+                    this.read_box_triclinic(input, ref box);
+                else if (load_box && input.line.length > 27 && input.line[:27] == "ITEM: BOX BOUNDS abc origin")
+                    this.read_box_abc_origin(input, ref box);
+                else if (load_box && input.line.length > 15 && input.line[:16] == "ITEM: BOX BOUNDS")
+                    this.read_box(input, ref box);
+                else if (load_particles && input.line == "ITEM: NUMBER OF ATOMS")
+                    this.read_particles_n(input, ref particles_n);
+                else if (load_particles && input.line.length > 10 && input.line[:11] == "ITEM: ATOMS")
+                    this.read_particles(input, particles_n, properties, ref particles);
+                else if (input.line.length > 4 && input.line[:5] == "ITEM:")
                 {
                     // skip unknown sections
                     while (input.read_line() != null && (input.line.length < 5 || input.line[:5] != "ITEM:"));
                     input.prev_line();
                 } else
                 {
-                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): parsing error");
+                    throw new ActionError.LOGIC_ERROR(@"Line $(input.line_n): parse error");
                 }
             }
 

@@ -1,2 +1,3 @@
-option('doc', type: 'boolean', value: true, description: 'Generate documentation')
+option('doc', type: 'boolean', value: false, description: 'Generate documentation')
 option('lib', type: 'boolean', value: true, description: 'Compile library')
+option('test', type: 'boolean', value: false, description: 'Compile tests')

@@ -7,6 +7,7 @@ project(
 )
 
 compile_lib = get_option('lib')
+compile_tests = get_option('test')
 generate_doc = get_option('doc')
 
 if compile_lib

@@ -14,9 +14,12 @@ aml_dependencies = [
 ]
 
 sources = files(
+    'src/readerparams.vala',
+    'src/writerparams.vala',
     'src/dumpreader.vala',
     'src/dumpwriter.vala',
     'src/inputhelper.vala',
+    'src/outputhelper.vala',
     'src/presets.vala',
 )
 
@@ -28,7 +31,7 @@ c_args = [
 ]
 
 vala_args = [
-    '--disable-warnings',
+    # '--disable-warnings',
 ]
 
 g_ir_args = [
@@ -171,7 +174,9 @@ if compile_lib
         )
     }
 
-    subdir('test')
+    if compile_tests
+        subdir('test')
+    endif
 endif
 
 modules += { module_name: module_dict }

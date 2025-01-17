@@ -170,7 +170,9 @@ if compile_lib
         )
     }
 
-    subdir('test')
+    if compile_tests
+        subdir('test')
+    endif
 endif
 
 modules += { module_name: module_dict }
