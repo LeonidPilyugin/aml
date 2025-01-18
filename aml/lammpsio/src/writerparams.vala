@@ -4,12 +4,12 @@ namespace AmlLammpsIo
 {
     public class WriterParams : ActionParams
     {
-        private string filepath = Presets.EMPTY_ID;
-        private string particles_id = Presets.EMPTY_ID;
-        private string box_id = Presets.EMPTY_ID;
-        private string timestep_id = Presets.EMPTY_ID;
-        private string time_id = Presets.EMPTY_ID;
-        private string units_id = Presets.EMPTY_ID;
+        private string filepath = DataCollectionHelper.EMPTY_ID;
+        private string particles_id = DataCollectionHelper.EMPTY_ID;
+        private string box_id = DataCollectionHelper.EMPTY_ID;
+        private string timestep_id = DataCollectionHelper.EMPTY_ID;
+        private string time_id = DataCollectionHelper.EMPTY_ID;
+        private string units_id = DataCollectionHelper.EMPTY_ID;
         private string[] properties = {};
 
         public string get_filepath()

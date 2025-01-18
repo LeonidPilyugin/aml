@@ -15,33 +15,18 @@ namespace AmlLammpsIo
 
             WriterParams ps = (WriterParams) params;
 
-            if (ps.get_particles_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_particles_id()))
+            if (ps.get_particles_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_particles_id()))
                 return @"particles_id \"$(ps.get_particles_id())\" is not a valid id";
-            if (ps.get_box_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_box_id()))
+            if (ps.get_box_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_box_id()))
                 return @"box_id \"$(ps.get_box_id())\" is not a valid id";
-            if (ps.get_timestep_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_timestep_id()))
+            if (ps.get_timestep_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_timestep_id()))
                 return @"timestep_id \"$(ps.get_timestep_id())\" is not a valid id";
-            if (ps.get_time_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_time_id()))
+            if (ps.get_time_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_time_id()))
                 return @"time_id \"$(ps.get_time_id())\" is not a valid id";
-            if (ps.get_units_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_units_id()))
+            if (ps.get_units_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_units_id()))
                 return @"units_id \"$(ps.get_units_id())\" is not a valid id";
 
             return "";
-        }
-
-        private DataObject? load_dataobject(string id, Type type, DataCollection data) throws ActionError
-        {
-            if (id == Presets.EMPTY_ID) return null;
-
-            if (!data.has_element(id))
-                throw new ActionError.LOGIC_ERROR(@"Data does not contain element \"$id\"");
-
-            DataObject result = data.get_element(id);
-
-            if (!result.get_type().is_a(type))
-                throw new ActionError.LOGIC_ERROR(@"Element \"$id\" is not instance of $(type.name())");
-
-            return result;
         }
 
         private void put_time(OutputHelper output, double time) throws ActionError
@@ -129,11 +114,13 @@ namespace AmlLammpsIo
             WriterParams params = (WriterParams) this.get_params();
             string[] properties = params.get_properties();
 
-            Particles? particles = (Particles?) this.load_dataobject(params.get_particles_id(), typeof(Particles), data);
-            ParallelepipedBox? box = (ParallelepipedBox?) this.load_dataobject(params.get_box_id(), typeof(ParallelepipedBox), data);
-            double? time = ((Float64?) this.load_dataobject(params.get_time_id(), typeof(Float64), data))?.get_val();
-            int64? timestep = ((Int64?) this.load_dataobject(params.get_timestep_id(), typeof(Int64), data))?.get_val();
-            string? units = ((String?) this.load_dataobject(params.get_units_id(), typeof(String), data))?.get_val();
+            DataCollectionHelper datahelper = new DataCollectionHelper(data);
+
+            Particles? particles = datahelper.load_dataobject<Particles>(params.get_particles_id());
+            ParallelepipedBox? box = datahelper.load_dataobject<ParallelepipedBox>(params.get_box_id());
+            double? time = datahelper.load_dataobject<Float64>(params.get_time_id())?.get_val();
+            int64? timestep = datahelper.load_dataobject<Int64>(params.get_timestep_id())?.get_val();
+            string? units = datahelper.load_dataobject<String>(params.get_units_id())?.get_val();
 
             StringPerParticleProperty[]? props = null;
             if (particles != null) props = this.get_string_perparticle_properties(particles, properties);

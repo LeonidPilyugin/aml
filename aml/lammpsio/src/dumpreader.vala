@@ -19,15 +19,15 @@ namespace AmlLammpsIo
             if(!file.query_exists())
                 return @"Path \"$(ps.get_filepath())\" does not exist";
 
-            if (ps.get_particles_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_particles_id()))
+            if (ps.get_particles_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_particles_id()))
                 return @"particles_id \"$(ps.get_particles_id())\" is not a valid id";
-            if (ps.get_box_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_box_id()))
+            if (ps.get_box_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_box_id()))
                 return @"box_id \"$(ps.get_box_id())\" is not a valid id";
-            if (ps.get_timestep_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_timestep_id()))
+            if (ps.get_timestep_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_timestep_id()))
                 return @"timestep_id \"$(ps.get_timestep_id())\" is not a valid id";
-            if (ps.get_time_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_time_id()))
+            if (ps.get_time_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_time_id()))
                 return @"time_id \"$(ps.get_time_id())\" is not a valid id";
-            if (ps.get_units_id() != Presets.EMPTY_ID && !DataCollection.is_valid_id(ps.get_units_id()))
+            if (ps.get_units_id() != DataCollectionHelper.EMPTY_ID && !DataCollection.is_valid_id(ps.get_units_id()))
                 return @"units_id \"$(ps.get_units_id())\" is not a valid id";
 
             HashTable<string, Type> props = ps.get_properties();
@@ -295,11 +295,11 @@ namespace AmlLammpsIo
 
             var properties = params.get_properties();
 
-            bool load_particles = particles_id != Presets.EMPTY_ID;
-            bool load_box = box_id != Presets.EMPTY_ID;
-            bool load_time = time_id != Presets.EMPTY_ID;
-            bool load_timestep  = timestep_id != Presets.EMPTY_ID;
-            bool load_units  = units_id != Presets.EMPTY_ID;
+            bool load_particles = particles_id != DataCollectionHelper.EMPTY_ID;
+            bool load_box = box_id != DataCollectionHelper.EMPTY_ID;
+            bool load_time = time_id != DataCollectionHelper.EMPTY_ID;
+            bool load_timestep  = timestep_id != DataCollectionHelper.EMPTY_ID;
+            bool load_units  = units_id != DataCollectionHelper.EMPTY_ID;
 
             var input = new InputHelper(filepath);
 

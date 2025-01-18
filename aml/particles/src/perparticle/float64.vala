@@ -1,5 +1,12 @@
 namespace AmlParticles
 {
+    struct ParallelArgs
+    {
+        void *first;
+        void *second;
+        uint size;
+    }
+
     public interface ConvertableToFloat64 : Object
     {
         public abstract Float64PerParticleProperty convert_to_float64() throws PerParticlePropertyError.TYPE_ERROR;

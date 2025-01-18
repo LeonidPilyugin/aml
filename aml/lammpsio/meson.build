@@ -14,13 +14,14 @@ aml_dependencies = [
 ]
 
 sources = files(
+    'src/datacollectionhelper.vala',
     'src/readerparams.vala',
     'src/writerparams.vala',
     'src/dumpreader.vala',
     'src/dumpwriter.vala',
+    'src/binarydumpwriter.vala',
     'src/inputhelper.vala',
     'src/outputhelper.vala',
-    'src/presets.vala',
 )
 
 c_args = [
