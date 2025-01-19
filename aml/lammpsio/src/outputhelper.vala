@@ -24,7 +24,7 @@ namespace AmlLammpsIo
             }
         }
 
-        public ssize_t put_bytes(unowned uint8[] bytes) throws ActionError.LOGIC_ERROR
+        public put_bytes(unowned uint8[] bytes) throws ActionError.LOGIC_ERROR
         {
             ssize_t written = 0;
             try
@@ -36,7 +36,6 @@ namespace AmlLammpsIo
                 this.stream.close();
                 throw new ActionError.LOGIC_ERROR(@"IOError: $(e.message)");
             }
-            return written;
         }
 
         public void put_string(string val) throws ActionError.LOGIC_ERROR
