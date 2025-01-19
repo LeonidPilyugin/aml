@@ -24,7 +24,7 @@ namespace AmlLammpsIo
             }
         }
 
-        public put_bytes(unowned uint8[] bytes) throws ActionError.LOGIC_ERROR
+        public void put_bytes(unowned uint8[] bytes) throws ActionError.LOGIC_ERROR
         {
             ssize_t written = 0;
             try
