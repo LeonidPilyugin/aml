@@ -20,6 +20,7 @@ sources = files(
     'src/dumpreader.vala',
     'src/dumpwriter.vala',
     'src/binarydumpwriter.vala',
+    'src/binarydumpreader.vala',
     'src/inputhelper.vala',
     'src/outputhelper.vala',
 )
@@ -32,7 +33,7 @@ c_args = [
 ]
 
 vala_args = [
-    # '--disable-warnings',
+    '--disable-warnings',
 ]
 
 g_ir_args = [

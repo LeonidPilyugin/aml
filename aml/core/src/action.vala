@@ -1,6 +1,5 @@
 namespace AmlCore
 {
-    // all instances should be immutable to prevent change from get_params
     public abstract class ActionParams : AmlObject
     {
         public abstract ActionParams copy();

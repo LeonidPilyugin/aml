@@ -65,7 +65,7 @@ namespace AmlParticles
 
         public Particle get_particle(uint index) throws ParticlesError.INDEX_ERROR
         {
-            if (index > this.size)
+            if (index >= this.size)
                 throw new ParticlesError.INDEX_ERROR("Index is out of range");
             
             Particle result = new Particle();

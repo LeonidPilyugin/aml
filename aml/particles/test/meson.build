@@ -2,6 +2,9 @@ tests = {
     'Dummy': files('dummy.vala'),
 }
 
+subdir('particles')
+subdir('perparticle')
+
 ############################
 # DO NOT CHANGE CODE BELOW #
 ############################

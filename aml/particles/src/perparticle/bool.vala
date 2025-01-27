@@ -31,7 +31,6 @@ namespace AmlParticles
                 throw new PerParticlePropertyError.INDEX_ERROR("Index out of range");
             bool *temp = this.array.data;
             temp[index] = value;
-            //this.array.data[index] = value;
         }
 
         public bool get_val(uint index) throws PerParticlePropertyError.INDEX_ERROR

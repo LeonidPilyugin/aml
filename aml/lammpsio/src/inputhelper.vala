@@ -43,6 +43,53 @@ namespace AmlLammpsIo
             this.stream.seek(-this.raw_line.length - 1, SeekType.CUR);
         }
 
+        public void read_bytes(uint8[] bytes) throws ActionError
+        {
+            try
+            {
+                this.stream.read(bytes);
+            } catch (IOError e)
+            {
+                this.stream.close();
+                throw new ActionError.LOGIC_ERROR(@"IOError: $(e.message)");
+            }
+        }
+
+        public double read_double() throws ActionError
+        {
+            uint8[] buffer = new uint8[sizeof(double)];
+            this.read_bytes(buffer);
+            return ((double*) buffer)[0];
+        }
+
+        public int32 read_int32() throws ActionError
+        {
+            uint8[] buffer = new uint8[sizeof(int32)];
+            this.read_bytes(buffer);
+            return ((int32*) buffer)[0];
+        }
+
+        public int64 read_int64() throws ActionError
+        {
+            uint8[] buffer = new uint8[sizeof(int64)];
+            this.read_bytes(buffer);
+            return ((int64*) buffer)[0];
+        }
+
+        public uint8 read_uint8() throws ActionError
+        {
+            uint8[] buffer = new uint8[1];
+            this.read_bytes(buffer);
+            return buffer[0];
+        }
+
+        public string read_string(uint size) throws ActionError
+        {
+            uint8[] buffer = new uint8[size];
+            this.read_bytes(buffer);
+            return (string) buffer;
+        }
+
         ~InputHelper()
         {
             this.stream.close();
