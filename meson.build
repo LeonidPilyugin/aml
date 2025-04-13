@@ -1,31 +1,33 @@
 project(
-    'Aml',
-    ['vala', 'c'],
-    version: '0.1',
-    license: 'GPL-3.0',
-    meson_version: '>=1.4.0',
+  'Aml',
+  ['vala', 'c'],
+  version: '0.1',
+  license: 'GPL-3.0',
+  meson_version: '>=1.4.0',
+  default_options: [
+    'buildtype=debugoptimized',
+  ]
 )
 
-compile_lib = get_option('lib')
-compile_tests = get_option('test')
-generate_doc = get_option('doc')
+# list keeps the order
+subprojects = [
+  [ 'core', { } ],
+  [ 'basictypes', { } ],
+  [ 'math', { } ],
+  [ 'box', { } ],
+  [ 'particles', { } ],
+  [ 'lammpsio', { } ],
+]
 
-if compile_lib
-    valac = find_program('valac')
-    g_ir_compiler = find_program('g-ir-compiler')
-endif
+subproject_objects = [ ]
 
-modules = {}
+foreach sp : subprojects
+  project_name = sp[0]
+  build_infos = sp[1]
+  is_required = build_infos.get('option', true)
+  default_options = build_infos.get('subproject_options', [])
 
-subdir('aml/core')
-subdir('aml/basictypes')
-subdir('aml/math')
-subdir('aml/box')
-subdir('aml/particles')
-subdir('aml/lammpsio')
+  subproject_objects += subproject(project_name, required: is_required, default_options: default_options)
+endforeach
 
-if generate_doc
-    valadoc = find_program('valadoc')
-    subdir('doc')
-endif
-    
+subdir('doc')

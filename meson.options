@@ -1,3 +1,1 @@
-option('doc', type: 'boolean', value: false, description: 'Generate documentation')
-option('lib', type: 'boolean', value: true, description: 'Compile library')
-option('test', type: 'boolean', value: false, description: 'Compile tests')
+option('name-prefix', type: 'string', value: 'Aml')

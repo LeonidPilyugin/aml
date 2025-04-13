@@ -1,37 +1,38 @@
-sources = []
-dependencies = []
-girdirs = []
-girs = []
+valadoc = find_program('valadoc')
 
-foreach i, module : modules
-    foreach dep : module['doc_dependencies']
-        if dep in dependencies
-            continue
-        endif
-        dependencies += dep
+valadoc_args = [ ]
+sources = [ ]
+
+foreach sp : subproject_objects
+  build_doc = sp.get_variable('build_doc', false)
+  if build_doc
+    sources += sp.get_variable('sources') 
+    dir = sp.get_variable('build_dir')
+    valadoc_args += [
+      '--girdir=' + dir,
+    ]
+    dependencies = sp.get_variable('thirdparty_dependencies')
+    foreach dep : dependencies
+      valadoc_args += [
+        '--pkg=' + dep.name(),
+      ]
     endforeach
-    sources += module['sources']
-    if compile_lib
-        girdirs += '--girdir=' + module['build_dir']
-        girs += module['typelib_target']
-    endif
+  endif
 endforeach
 
 custom_target(
-    'doc',
-    command: [
-        valadoc,
-        '--force',
-        girdirs,
-        '-o',
-        meson.current_build_dir(),
-        '--package-name=' + meson.project_name(),
-        '--package-version=' + meson.project_version(),
-        dependencies,
-        sources,
-    ],
-    output: 'index.html',
-    depends: girs,
-    install: true,
-    install_dir: meson.current_build_dir(),
+  'doc',
+  command: [
+    valadoc,
+    '--force',
+    '-o',
+    meson.current_build_dir(),
+    '--package-name=' + meson.project_name(),
+    '--package-version=' + meson.project_version(),
+    valadoc_args,
+    sources,
+  ],
+  output: 'index.html',
+  install: true,
+  install_dir: meson.current_build_dir(),
 )

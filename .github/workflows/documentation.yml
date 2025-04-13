@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: apt-get update && apt-get -y install python3-pip libvala-dev valac git libgsl-dev && apt remove -y meson && pip3 install --upgrade meson
       - name: Build
-        run: meson build -Ddoc=true -Dlib=false && ninja -C build
+        run: scripts/build-doc.sh
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: peaceiris/actions-gh-pages@v3
