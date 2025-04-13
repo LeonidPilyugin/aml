@@ -29,11 +29,13 @@
         <ul class="navi_main">
           <li class="creation_method"><a href="AmlBox.ParallelepipedBox.ParallelepipedBox.html">ParallelepipedBox</a></li>
           <li class="creation_method"><a href="AmlBox.ParallelepipedBox.ParallelepipedBox.create.html">ParallelepipedBox.create</a></li>
+          <li class="virtual_method"><a href="AmlBox.ParallelepipedBox.contains_point.html">contains_point</a></li>
           <li class="virtual_method"><a href="AmlBox.ParallelepipedBox.copy.html">copy</a></li>
           <li class="method"><a href="AmlBox.ParallelepipedBox.get_boundaries.html">get_boundaries</a></li>
           <li class="method"><a href="AmlBox.ParallelepipedBox.get_edge.html">get_edge</a></li>
           <li class="method"><a href="AmlBox.ParallelepipedBox.get_origin.html">get_origin</a></li>
           <li class="virtual_method"><a href="AmlBox.ParallelepipedBox.get_volume.html">get_volume</a></li>
+          <li class="virtual_method"><a href="AmlBox.ParallelepipedBox.map_periodic.html">map_periodic</a></li>
           <li class="method"><a href="AmlBox.ParallelepipedBox.set_boundaries.html">set_boundaries</a></li>
           <li class="method"><a href="AmlBox.ParallelepipedBox.set_edge.html">set_edge</a></li>
           <li class="method"><a href="AmlBox.ParallelepipedBox.set_origin.html">set_origin</a></li>
@@ -68,13 +70,17 @@
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="AmlBox.ParallelepipedBox.ParallelepipedBox.create.html" class="creation_method">ParallelepipedBox.create</a></b> (<span class="main_type"><a href="AmlMath.Matrix.html" class="class">Matrix</a></span> edge, <span class="main_type"><a href="AmlMath.Vector.html" class="class">Vector</a></span> origin, <span class="main_basic_type"><span class="struct">bool</span></span>[] boundaries) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlBox.ParallelepipedBoxError.html" class="errordomain">ParallelepipedBoxError</a></span>
+          <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="AmlBox.ParallelepipedBox.ParallelepipedBox.create.html" class="creation_method">ParallelepipedBox.create</a></b> (<span class="main_type"><a href="AmlMath.Matrix3.html" class="struct">Matrix3</a></span> edge, <span class="main_type"><a href="AmlMath.Vector3.html" class="struct">Vector3</a></span> origin, <span class="main_basic_type"><span class="struct">bool</span></span>[] boundaries) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlBox.ParallelepipedBoxError.html" class="errordomain">ParallelepipedBoxError</a></span>
             </span>
             <div class="leaf_brief_description">
             </div></li>
         </ul>
         <h3 class="main_title">Methods:</h3>
         <ul class="navi_inline">
+          <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="AmlBox.ParallelepipedBox.contains_point.html" class="virtual_method">contains_point</a></b> (<span class="main_type"><a href="AmlMath.Vector3.html" class="struct">Vector3</a></span> point)
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
           <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_type"><a href="AmlCore.DataObject.html" class="abstract_class">DataObject</a></span> <b><a href="AmlBox.ParallelepipedBox.copy.html" class="virtual_method">copy</a></b> ()
             </span>
             <div class="leaf_brief_description">
@@ -83,11 +89,11 @@
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="AmlMath.Matrix.html" class="class">Matrix</a></span> <b><a href="AmlBox.ParallelepipedBox.get_edge.html" class="method">get_edge</a></b> ()
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="AmlMath.Matrix3.html" class="struct">Matrix3</a></span> <b><a href="AmlBox.ParallelepipedBox.get_edge.html" class="method">get_edge</a></b> ()
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="AmlMath.Vector.html" class="class">Vector</a></span> <b><a href="AmlBox.ParallelepipedBox.get_origin.html" class="method">get_origin</a></b> ()
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="AmlMath.Vector3.html" class="struct">Vector3</a></span> <b><a href="AmlBox.ParallelepipedBox.get_origin.html" class="method">get_origin</a></b> ()
             </span>
             <div class="leaf_brief_description">
             </div></li>
@@ -95,23 +101,32 @@
             </span>
             <div class="leaf_brief_description">
             </div></li>
+          <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_keyword">void</span> <b><a href="AmlBox.ParallelepipedBox.map_periodic.html" class="virtual_method">map_periodic</a></b> (<span class="main_type"><a href="AmlMath.Vector3.html" class="struct">Vector3</a></span> point, <span class="main_type"><a href="AmlMath.Vector3.html" class="struct">Vector3</a></span> map, <span class="main_type"><a href="AmlMath.Vector3.html" class="struct">Vector3</a></span> result)
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlBox.ParallelepipedBox.set_boundaries.html" class="method">set_boundaries</a></b> (<span class="main_basic_type"><span class="struct">bool</span></span>[] boundaries) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlBox.ParallelepipedBoxError.html" class="errordomain">ParallelepipedBoxError</a></span>
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlBox.ParallelepipedBox.set_edge.html" class="method">set_edge</a></b> (<span class="main_type"><a href="AmlMath.Matrix.html" class="class">Matrix</a></span> matrix) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlBox.ParallelepipedBoxError.html" class="errordomain">ParallelepipedBoxError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlBox.ParallelepipedBox.set_edge.html" class="method">set_edge</a></b> (<span class="main_type"><a href="AmlMath.Matrix3.html" class="struct">Matrix3</a></span> matrix) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlBox.ParallelepipedBoxError.html" class="errordomain">ParallelepipedBoxError</a></span>
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlBox.ParallelepipedBox.set_origin.html" class="method">set_origin</a></b> (<span class="main_type"><a href="AmlMath.Vector.html" class="class">Vector</a></span> vector) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlBox.ParallelepipedBoxError.html" class="errordomain">ParallelepipedBoxError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlBox.ParallelepipedBox.set_origin.html" class="method">set_origin</a></b> (<span class="main_type"><a href="AmlMath.Vector3.html" class="struct">Vector3</a></span> vector)
             </span>
             <div class="leaf_brief_description">
             </div></li>
         </ul>
         <h3 class="main_title">Inherited Members:</h3>
         <div class="box">
-          <div class="headline" onclick="toggle_box (this, 'box-content-26')">All known members inherited from class AmlBox.Box</div>
-          <div class="content" id="box-content-26">
+          <div class="headline" onclick="toggle_box (this, 'box-content-24')">All known members inherited from class AmlBox.Box</div>
+          <div class="content" id="box-content-24">
+            <div class="column">
+              <ul class="navi_inline">
+                <li class="abstract_method"><a href="AmlBox.Box.contains_point.html">contains_point</a></li>
+              </ul>
+            </div>
             <div class="column">
               <ul class="navi_inline">
                 <li class="abstract_method"><a href="AmlBox.Box.get_volume.html">get_volume</a></li>
@@ -119,17 +134,14 @@
             </div>
             <div class="column">
               <ul class="navi_inline">
-              </ul>
-            </div>
-            <div class="column">
-              <ul class="navi_inline">
+                <li class="abstract_method"><a href="AmlBox.Box.map_periodic.html">map_periodic</a></li>
               </ul>
             </div>
           </div>
         </div>
         <div class="box">
-          <div class="headline" onclick="toggle_box (this, 'box-content-27')">All known members inherited from class AmlCore.DataObject</div>
-          <div class="content" id="box-content-27">
+          <div class="headline" onclick="toggle_box (this, 'box-content-25')">All known members inherited from class AmlCore.DataObject</div>
+          <div class="content" id="box-content-25">
             <div class="column">
               <ul class="navi_inline">
                 <li class="abstract_method"><a href="AmlCore.DataObject.copy.html">copy</a></li>
@@ -146,8 +158,8 @@
           </div>
         </div>
         <div class="box">
-          <div class="headline" onclick="toggle_box (this, 'box-content-28')">All known members inherited from class GLib.Object</div>
-          <div class="content" id="box-content-28">
+          <div class="headline" onclick="toggle_box (this, 'box-content-26')">All known members inherited from class GLib.Object</div>
+          <div class="content" id="box-content-26">
             <div class="column">
               <ul class="navi_inline">
                 <li class="method">@get</li>
