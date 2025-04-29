@@ -29,6 +29,7 @@
         <ul class="navi_main">
           <li class="creation_method"><a href="AmlParticles.Particles.Particles.html">Particles</a></li>
           <li class="creation_method"><a href="AmlParticles.Particles.Particles.sized.html">Particles.sized</a></li>
+          <li class="method"><a href="AmlParticles.Particles.clear.html">clear</a></li>
           <li class="virtual_method"><a href="AmlParticles.Particles.copy.html">copy</a></li>
           <li class="method"><a href="AmlParticles.Particles.del_prop.html">del_prop</a></li>
           <li class="method"><a href="AmlParticles.Particles.get_ids.html">get_ids</a></li>
@@ -36,13 +37,6 @@
           <li class="method"><a href="AmlParticles.Particles.get_prop.html">get_prop</a></li>
           <li class="method"><a href="AmlParticles.Particles.get_size.html">get_size</a></li>
           <li class="method"><a href="AmlParticles.Particles.has_prop.html">has_prop</a></li>
-          <li class="method"><a href="AmlParticles.Particles.insert_first.html">insert_first</a></li>
-          <li class="method"><a href="AmlParticles.Particles.insert_last.html">insert_last</a></li>
-          <li class="method"><a href="AmlParticles.Particles.insert_particle.html">insert_particle</a></li>
-          <li class="method"><a href="AmlParticles.Particles.remove_first.html">remove_first</a></li>
-          <li class="method"><a href="AmlParticles.Particles.remove_last.html">remove_last</a></li>
-          <li class="method"><a href="AmlParticles.Particles.remove_particle.html">remove_particle</a></li>
-          <li class="method"><a href="AmlParticles.Particles.set_particle.html">set_particle</a></li>
           <li class="method"><a href="AmlParticles.Particles.set_prop.html">set_prop</a></li>
           <li class="method"><a href="AmlParticles.Particles.set_size.html">set_size</a></li>
         </ul>
@@ -54,9 +48,8 @@
         <img class="main_diagram" usemap="#AmlParticles.Particles" alt="Object hierarchy for Particles" src="img/AmlParticles.Particles.png"/>
 
       <map id="AmlParticles.Particles" name="AmlParticles.Particles">
-<area shape="rect" id="node1" href="AmlParticles.Particles.html" title="AmlParticles.Particles" alt="" coords="5,293,236,341"/>
-<area shape="rect" id="node2" href="AmlCore.DataObject.html" title="AmlCore.DataObject" alt="" coords="12,197,229,245"/>
-<area shape="rect" id="node3" href="AmlCore.AmlObject.html" title="AmlCore.AmlObject" alt="" coords="16,101,225,149"/>
+<area shape="rect" id="node1" href="AmlParticles.Particles.html" title="AmlParticles.Particles" alt="" coords="5,101,236,149"/>
+<area shape="rect" id="node2" href="AmlCore.DataObject.html" title="AmlCore.DataObject" alt="" coords="12,5,229,53"/>
 </map>
 
         <h2 class="main_title">Description:</h2>
@@ -73,18 +66,22 @@
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="AmlParticles.Particles.Particles.sized.html" class="creation_method">Particles.sized</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> size)
+          <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="AmlParticles.Particles.Particles.sized.html" class="creation_method">Particles.sized</a></b> (<span class="main_basic_type"><span class="struct">size_t</span></span> size)
             </span>
             <div class="leaf_brief_description">
             </div></li>
         </ul>
         <h3 class="main_title">Methods:</h3>
         <ul class="navi_inline">
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.clear.html" class="method">clear</a></b> ()
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
           <li class="virtual_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">override</span> <span class="main_type"><a href="AmlCore.DataObject.html" class="abstract_class">DataObject</a></span> <b><a href="AmlParticles.Particles.copy.html" class="virtual_method">copy</a></b> ()
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.del_prop.html" class="method">del_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.del_prop.html" class="method">del_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticleError.html" class="errordomain">ParticleError</a></span>
             </span>
             <div class="leaf_brief_description">
             </div></li>
@@ -92,15 +89,15 @@
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="AmlParticles.Particle.html" class="class">Particle</a></span> <b><a href="AmlParticles.Particles.get_particle.html" class="method">get_particle</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.get_particle.html" class="method">get_particle</a></b> (<span class="main_basic_type"><span class="struct">size_t</span></span> index, <span class="main_type"><a href="AmlParticles.Particle.html" class="class">Particle</a></span> particle) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="AmlParticles.PerParticleProperty.html" class="abstract_class">PerParticleProperty</a></span> <b><a href="AmlParticles.Particles.get_prop.html" class="method">get_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="AmlTypes.ArrayProperty.html" class="abstract_class">ArrayProperty</a></span> <b><a href="AmlParticles.Particles.get_prop.html" class="method">get_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint</span></span> <b><a href="AmlParticles.Particles.get_size.html" class="method">get_size</a></b> ()
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">size_t</span></span> <b><a href="AmlParticles.Particles.get_size.html" class="method">get_size</a></b> ()
             </span>
             <div class="leaf_brief_description">
             </div></li>
@@ -108,47 +105,19 @@
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.insert_first.html" class="method">insert_first</a></b> (<span class="main_type"><a href="AmlParticles.Particle.html" class="class">Particle</a></span> particle) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.set_prop.html" class="method">set_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id, <span class="main_type"><a href="AmlTypes.ArrayProperty.html" class="abstract_class">ArrayProperty</a></span> prop) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.insert_last.html" class="method">insert_last</a></b> (<span class="main_type"><a href="AmlParticles.Particle.html" class="class">Particle</a></span> particle) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
-            </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.insert_particle.html" class="method">insert_particle</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_type"><a href="AmlParticles.Particle.html" class="class">Particle</a></span> particle) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
-            </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.remove_first.html" class="method">remove_first</a></b> () <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
-            </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.remove_last.html" class="method">remove_last</a></b> () <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
-            </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.remove_particle.html" class="method">remove_particle</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
-            </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.set_particle.html" class="method">set_particle</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> index, <span class="main_type"><a href="AmlParticles.Particle.html" class="class">Particle</a></span> particle) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
-            </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.set_prop.html" class="method">set_prop</a></b> (<span class="main_basic_type"><span class="class">string</span></span> id, <span class="main_type"><a href="AmlParticles.PerParticleProperty.html" class="abstract_class">PerParticleProperty</a></span> prop) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlParticles.ParticlesError.html" class="errordomain">ParticlesError</a></span>
-            </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.set_size.html" class="method">set_size</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> size)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="AmlParticles.Particles.set_size.html" class="method">set_size</a></b> (<span class="main_basic_type"><span class="struct">size_t</span></span> size) <span class="main_keyword">throws</span> <span class="main_type"><a href="AmlTypes.ArrayPropertyError.html" class="errordomain">ArrayPropertyError</a></span>
             </span>
             <div class="leaf_brief_description">
             </div></li>
         </ul>
         <h3 class="main_title">Inherited Members:</h3>
         <div class="box">
-          <div class="headline" onclick="toggle_box (this, 'box-content-28')">All known members inherited from class AmlCore.DataObject</div>
-          <div class="content" id="box-content-28">
+          <div class="headline" onclick="toggle_box (this, 'box-content-63')">All known members inherited from class AmlCore.DataObject</div>
+          <div class="content" id="box-content-63">
             <div class="column">
               <ul class="navi_inline">
                 <li class="abstract_method"><a href="AmlCore.DataObject.copy.html">copy</a></li>
@@ -160,73 +129,6 @@
             </div>
             <div class="column">
               <ul class="navi_inline">
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <div class="headline" onclick="toggle_box (this, 'box-content-29')">All known members inherited from class GLib.Object</div>
-          <div class="content" id="box-content-29">
-            <div class="column">
-              <ul class="navi_inline">
-                <li class="method">@get</li>
-                <li class="static_method">@new</li>
-                <li class="method">@ref</li>
-                <li class="method">@set</li>
-                <li class="method">add_toggle_ref</li>
-                <li class="method">add_weak_pointer</li>
-                <li class="method">bind_property</li>
-                <li class="method">connect</li>
-                <li class="virtual_method">constructed</li>
-                <li class="method">disconnect</li>
-                <li class="virtual_method">dispose</li>
-                <li class="method">dup_data</li>
-                <li class="method">dup_qdata</li>
-                <li class="method">force_floating</li>
-                <li class="method">freeze_notify</li>
-                <li class="method">get_class</li>
-                <li class="method">get_data</li>
-              </ul>
-            </div>
-            <div class="column">
-              <ul class="navi_inline">
-                <li class="method">get_property</li>
-                <li class="method">get_qdata</li>
-                <li class="method">get_type</li>
-                <li class="method">getv</li>
-                <li class="static_method">interface_find_property</li>
-                <li class="static_method">interface_install_property</li>
-                <li class="static_method">interface_list_properties</li>
-                <li class="method">is_floating</li>
-                <li class="static_method">new_valist</li>
-                <li class="static_method">new_with_properties</li>
-                <li class="static_method">newv</li>
-                <li class="signal">notify</li>
-                <li class="method">notify_property</li>
-                <li class="field">ref_count</li>
-                <li class="method">ref_sink</li>
-                <li class="method">remove_toggle_ref</li>
-                <li class="method">remove_weak_pointer</li>
-              </ul>
-            </div>
-            <div class="column">
-              <ul class="navi_inline">
-                <li class="method">replace_data</li>
-                <li class="method">replace_qdata</li>
-                <li class="method">set_data</li>
-                <li class="method">set_data_full</li>
-                <li class="method">set_property</li>
-                <li class="method">set_qdata</li>
-                <li class="method">set_qdata_full</li>
-                <li class="method">set_valist</li>
-                <li class="method">setv</li>
-                <li class="method">steal_data</li>
-                <li class="method">steal_qdata</li>
-                <li class="method">thaw_notify</li>
-                <li class="method">unref</li>
-                <li class="method">watch_closure</li>
-                <li class="method">weak_ref</li>
-                <li class="method">weak_unref</li>
               </ul>
             </div>
           </div>
