@@ -24,17 +24,13 @@ if build_lib
   dependencies = thirdparty_dependencies
   dependencies += [
     dependency('AmlCore'),
+    dependency('AmlTypes'),
   ]
 endif
 
 sources = files(
   'src/particle.vala',
   'src/particles.vala',
-  'src/perparticle/bool.vala',
-  'src/perparticle/float64.vala',
-  'src/perparticle/int64.vala',
-  'src/perparticle/property.vala',
-  'src/perparticle/string.vala',
 )
 
 show_vala_warnings = get_option('vala-warnings')

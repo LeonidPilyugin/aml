@@ -1,5 +1,5 @@
 using AmlCore;
-using AmlBasicTypes;
+using AmlTypes;
 using AmlBox;
 using AmlParticles;
 using AmlMath;
@@ -44,7 +44,7 @@ namespace AmlLammpsIo
             output.put_string(@"ITEM: TIMESTEP\n$timestep\n");
         }
 
-        private void put_n_atoms(OutputHelper output, uint n_atoms) throws ActionError
+        private void put_n_atoms(OutputHelper output, size_t n_atoms) throws ActionError
         {
             output.put_string(@"ITEM: NUMBER OF ATOMS\n$(n_atoms)\n");
         }
@@ -58,54 +58,62 @@ namespace AmlLammpsIo
             output.put_string("ITEM: BOX BOUNDS ");
             if (!edge.is_diagonal())
                 output.put_string("abc origin ");
-            for (uint8 i = 0; i < 3; i++)
+            for (uint i = 0; i < 3; i++)
                 output.put_string(boundaries[i] ? "pp " : "ff ");
             output.put_string("\n");
             if (edge.is_diagonal())
             {
-                for (uint8 i = 0; i < 3; i++)
+                for (uint i = 0; i < 3; i++)
                     output.put_string(@"$(origin.get_element(i)) $(origin.get_element(i) + edge.get_element(i, i))\n");
             } else
             {
-                for (uint8 i = 0; i < 3; i++)
+                for (uint i = 0; i < 3; i++)
                 {
-                    for (uint8 j = 0; j < 3; j++)
+                    for (uint j = 0; j < 3; j++)
                         output.put_string(@"$(edge.get_element(i, j)) ");
                     output.put_string(@"$(origin.get_element(i))\n");
                 }
             }
         }
 
-        private StringPerParticleProperty[] get_string_perparticle_properties(Particles particles, unowned string[] properties) throws ActionError
-        {
-            StringPerParticleProperty[] props = new StringPerParticleProperty[properties.length];
-            if (particles != null)
-            {
-                for (uint i = 0; i < props.length; i++)
-                {
-                    if (!particles.has_prop(properties[i]))
-                        throw new ActionError.LOGIC_ERROR(@"Particles does not contain property \"$(properties[i])\"");
-                    var precast = particles.get_prop(properties[i]);
-                    if (!(precast is ConvertableToString))
-                        throw new ActionError.LOGIC_ERROR(@"Element \"$(properties[i])\" is not instance of ConvertableToString");
-                    props[i] = ((ConvertableToString) precast).convert_to_string();
-                }
-            }
-            return props;
-        }
-
-        private void put_particles(OutputHelper output, Particles particles, unowned StringPerParticleProperty[] props, unowned string[] properties) throws ActionError
+        private void put_particles(OutputHelper output, Particles particles, string[] properties) throws ActionError
         {
             output.put_string("ITEM: ATOMS ");
-            for (uint i = 0; i < props.length; i++)
+            for (uint i = 0; i < properties.length; i++)
                 output.put_string(@"$(properties[i]) ");
             output.put_string("\n");
 
-            for (uint i = 0; i < particles.get_size(); i++)
+            var temp = new StringProperty.create();
+            var props = new ArrayProperty[properties.length];
+            var ps = new Property[properties.length];
+            for (uint i = 0; i < properties.length; i++)
+            {
+                props[i] = particles.get_prop(properties[i]);
+                ps[i] = props[i].get_type_object().create_property();
+            }
+            
+            for (size_t i = 0; i < particles.get_size(); i++)
             {
                 for (uint j = 0; j < props.length; j++)
-                    output.put_string(@"$(props[j].get_val(i)) ");
+                {
+                    props[j].get_property(i, ps[j]);
+                    temp.convert(ps[j]);
+                    output.put_string(temp.get_val());
+                    output.put_string(" ");
+                }
                 output.put_string("\n");
+            }
+        }
+
+        private void check_particles(Particles particles, string[] properties) throws ActionError
+        {
+            for (uint i = 0; i < properties.length; i++)
+            {
+                if (!particles.has_prop(properties[i]))
+                    throw new ActionError.RUNTIME_ERROR(@"Particles do not contain \"$(properties[i])\" property");
+                var prop = particles.get_prop(properties[i]);
+                if (!StringType.instance().can_convert(prop.get_type_object()))
+                    throw new ActionError.RUNTIME_ERROR(@"Cannot convert \"$(properties[i])\" property to string");
             }
         }
 
@@ -123,16 +131,15 @@ namespace AmlLammpsIo
             try {
                 particles = data.get_dataobject<Particles>(params.get_particles_id());
                 box = data.get_dataobject<ParallelepipedBox>(params.get_box_id());
-                time = data.get_dataobject<Float64>(params.get_time_id())?.get_val();
-                timestep = data.get_dataobject<Int64>(params.get_timestep_id())?.get_val();
-                units = data.get_dataobject<String>(params.get_units_id())?.get_val();
+                time = data.get_dataobject<Float64Property>(params.get_time_id())?.get_val();
+                timestep = data.get_dataobject<Int64Property>(params.get_timestep_id())?.get_val();
+                units = data.get_dataobject<StringProperty>(params.get_units_id())?.get_val();
             } catch (DataCollectionError.ELEMENT_ERROR e)
             {
-                throw new ActionError.LOGIC_ERROR(e.message);
+                throw new ActionError.RUNTIME_ERROR(e.message);
             }
 
-            StringPerParticleProperty[]? props = null;
-            if (particles != null) props = this.get_string_perparticle_properties(particles, properties);
+            if (particles != null) this.check_particles(particles, properties);
                         
             OutputHelper output = new OutputHelper(params.get_filepath());
 
@@ -142,7 +149,7 @@ namespace AmlLammpsIo
             if (particles != null) this.put_n_atoms(output, particles.get_size());
             if (box != null) this.put_box(output, box);
 
-            if (particles != null) this.put_particles(output, particles, props, properties);
+            if (particles != null) this.put_particles(output, particles, properties);
         }
     }
 }

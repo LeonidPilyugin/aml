@@ -6,7 +6,7 @@ namespace AmlCore
         DOUBLE_RETRACT_ERROR,
     }
 
-    public abstract class DataObject : AmlObject
+    public abstract class DataObject
     {
         private bool assigned = false;
 

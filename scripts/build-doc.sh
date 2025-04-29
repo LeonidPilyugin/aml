@@ -1,7 +1,7 @@
 #!/bin/bash
 
-meson build                     \
-    -Dbasictypes:build-type=doc \
+meson setup build                     \
+    -Dtypes:build-type=doc \
     -Dbox:build-type=doc        \
     -Dcore:build-type=doc       \
     -Dlammpsio:build-type=doc   \

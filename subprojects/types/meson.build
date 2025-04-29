@@ -1,5 +1,5 @@
 project(
-  'BasicTypes',
+  'Types',
   ['vala', 'c'],
   version: '0.1',
   license: 'GPL-3.0',
@@ -28,10 +28,11 @@ if build_lib
 endif
 
 sources = files(
-  'src/basictype.vala',
   'src/bool.vala',
+  'src/databuffer.vala',
   'src/float64.vala',
   'src/int64.vala',
+  'src/property.vala',
   'src/string.vala',
 )
 

@@ -2,7 +2,7 @@ option('vala-warnings', type: 'boolean', value: false,
   description: 'Enable Vala compiler warnings')
 option('c-warnings', type: 'boolean', value: false,
   description: 'Enable C compiler warnings')
-option('build-type', type: 'combo', choices: ['doc', 'lib', 'typelib', 'all'], value: 'all',
+option('build-type', type: 'combo', choices: ['doc', 'lib', 'typelib', 'all', 'no'], value: 'all',
   description: 'The build type. Option doc stands for only documentation generation, ' +
                'lib builds shared library, header, vapi and gir, typelib also builds typelib, ' +
-               'all option also builds documentation')
+               'all option also builds documentation, no doesn\'t build anything')

@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install dependencies
-        run: apt-get update && apt-get -y install python3-pip libvala-dev valac git libgsl-dev && apt remove -y meson && pip3 install --upgrade meson
+        run: apt-get update && apt-get -y install python3-pip libvala-dev valac git libgsl-dev && apt remove -y meson && pip3 install --upgrade meson==1.7.2
       - name: Build
         run: scripts/build-doc.sh
       - name: Deploy

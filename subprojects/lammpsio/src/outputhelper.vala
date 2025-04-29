@@ -9,7 +9,7 @@ namespace AmlLammpsIo
 
         public const uint BUFFER_SIZE = 8096;
 
-        public OutputHelper(string filepath) throws ActionError.LOGIC_ERROR
+        public OutputHelper(string filepath) throws ActionError.RUNTIME_ERROR
         {
             try
             {
@@ -20,11 +20,11 @@ namespace AmlLammpsIo
                 this.stream = bstream;
             } catch (Error e)
             {
-                throw new ActionError.LOGIC_ERROR(@"Cannot open file \"$filepath\" for write: $(e.message)");
+                throw new ActionError.RUNTIME_ERROR(@"Cannot open file \"$filepath\" for write: $(e.message)");
             }
         }
 
-        public void put_bytes(unowned uint8[] bytes) throws ActionError.LOGIC_ERROR
+        public void put_bytes(unowned uint8[] bytes) throws ActionError.RUNTIME_ERROR
         {
             ssize_t written = 0;
             try
@@ -34,31 +34,31 @@ namespace AmlLammpsIo
             } catch (IOError e)
             {
                 this.stream.close();
-                throw new ActionError.LOGIC_ERROR(@"IOError: $(e.message)");
+                throw new ActionError.RUNTIME_ERROR(@"IOError: $(e.message)");
             }
         }
 
-        public void put_string(string val) throws ActionError.LOGIC_ERROR
+        public void put_string(string val) throws ActionError.RUNTIME_ERROR
         {
             this.put_bytes(val.data);
         }
 
-        public void put_double(double val) throws ActionError.LOGIC_ERROR
+        public void put_double(double val) throws ActionError.RUNTIME_ERROR
         {
             this.put_bytes((uint8[]) val);
         }
 
-        public void put_int64(int64 val) throws ActionError.LOGIC_ERROR
+        public void put_int64(int64 val) throws ActionError.RUNTIME_ERROR
         {
             this.put_bytes((uint8[]) val);
         }
 
-        public void put_int32(int32 val) throws ActionError.LOGIC_ERROR
+        public void put_int32(int32 val) throws ActionError.RUNTIME_ERROR
         {
             this.put_bytes((uint8[]) val);
         }
 
-        public void put_uint8(uint8 val) throws ActionError.LOGIC_ERROR
+        public void put_uint8(uint8 val) throws ActionError.RUNTIME_ERROR
         {
             this.put_bytes((uint8[]) val);
         }

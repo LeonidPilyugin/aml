@@ -1,6 +1,6 @@
 namespace AmlCore
 {
-    public abstract class ActionParams : AmlObject
+    public abstract class ActionParams
     {
         public abstract ActionParams copy();
     }
@@ -9,11 +9,11 @@ namespace AmlCore
     {
         PARAMS_ERROR,
         DATA_ERROR,
-        LOGIC_ERROR,
+        RUNTIME_ERROR,
         UNKNOWN_ERROR,
     }
 
-    public abstract class Action : AmlObject
+    public abstract class Action
     {
         private ActionParams? params = null;
 

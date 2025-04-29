@@ -1,4 +1,5 @@
 using AmlCore;
+using AmlTypes;
 
 namespace AmlLammpsIo
 {
@@ -10,7 +11,8 @@ namespace AmlLammpsIo
         private string timestep_id = DataCollection.EMPTY_ID;
         private string time_id = DataCollection.EMPTY_ID;
         private string units_id = DataCollection.EMPTY_ID;
-        private HashTable<string, Type> properties = new HashTable<string, Type>(str_hash, str_equal);
+        private string[] keys = {};
+        private AmlTypes.Type[] types = {};
 
         public string get_filepath()
         {
@@ -72,14 +74,20 @@ namespace AmlLammpsIo
             this.units_id = units_id;
         }
 
-        public unowned HashTable<string, Type> get_properties()
+        public unowned string[] get_keys()
         {
-            return this.properties;
+            return this.keys;
         }
 
-        public void set_properties(owned HashTable<string, Type> properties)
+        public unowned AmlTypes.Type[] get_types()
         {
-            this.properties = (owned) properties;
+            return this.types;
+        }
+
+        public void set_properties(owned string[] keys, owned AmlTypes.Type[] types)
+        {
+            this.keys = (owned) keys;
+            this.types = (owned) types;
         }
 
         public override ActionParams copy()
@@ -92,9 +100,8 @@ namespace AmlLammpsIo
             res.timestep_id = this.timestep_id;
             res.time_id = this.time_id;
             res.units_id = this.units_id;
-            res.properties = new HashTable<string, Type>(str_hash, str_equal);
-            foreach (var key in this.properties.get_keys())
-                res.properties.set(key, this.properties.get(key));
+            res.keys = this.keys;
+            res.types = this.types;
 
             return res;
         }

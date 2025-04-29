@@ -30,7 +30,6 @@ sources = files(
   'src/action.vala',
   'src/datacollection.vala',
   'src/dataobject.vala',
-  'src/object.vala',
 )
 
 show_vala_warnings = get_option('vala-warnings')

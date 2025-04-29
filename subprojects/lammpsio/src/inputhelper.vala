@@ -19,7 +19,7 @@ namespace AmlLammpsIo
                 this.line_n = 0;
             } catch (Error e)
             {
-                throw new ActionError.LOGIC_ERROR(@"Cannot open file \"filepath\": $(e.message)");
+                throw new ActionError.RUNTIME_ERROR(@"Cannot open file \"filepath\": $(e.message)");
             }
         }
 
@@ -33,7 +33,7 @@ namespace AmlLammpsIo
             } catch (IOError e)
             {
                 this.stream.close();
-                throw new ActionError.LOGIC_ERROR(@"IOError at line $(this.line_n): $(e.message)");
+                throw new ActionError.RUNTIME_ERROR(@"IOError at line $(this.line_n): $(e.message)");
             }
         }
 
@@ -51,7 +51,7 @@ namespace AmlLammpsIo
             } catch (IOError e)
             {
                 this.stream.close();
-                throw new ActionError.LOGIC_ERROR(@"IOError: $(e.message)");
+                throw new ActionError.RUNTIME_ERROR(@"IOError: $(e.message)");
             }
         }
 

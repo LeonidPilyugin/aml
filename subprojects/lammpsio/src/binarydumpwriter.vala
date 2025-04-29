@@ -1,5 +1,5 @@
 using AmlCore;
-using AmlBasicTypes;
+using AmlTypes;
 using AmlBox;
 using AmlParticles;
 using AmlMath;
@@ -61,24 +61,24 @@ namespace AmlLammpsIo
             output.put_int32(edge.is_diagonal() ? 0 : 2);
             
             // put boundaries
-            for (uint8 i = 0; i < 3; i++)
-                for (uint8 j = 0; j < 2; j++)
+            for (uint i = 0; i < 3; i++)
+                for (uint j = 0; j < 2; j++)
                     output.put_int32(boundaries[i] ? 0 : 1);
 
             // put triclinic
             if (edge.is_diagonal())
             {
-                for (uint8 i = 0; i < 3; i++)
+                for (uint i = 0; i < 3; i++)
                 {
                     output.put_double(origin.get_element(i));
                     output.put_double(origin.get_element(i) + edge.get_element(i, i));
                 }
             } else
             {
-                for (uint8 i = 0; i < 3; i++)
-                    for (uint8 j = 0; j < 3; j++)
+                for (uint i = 0; i < 3; i++)
+                    for (uint j = 0; j < 3; j++)
                         output.put_double(edge.get_element(i, j));
-                for (uint8 i = 0; i < 3; i++)
+                for (uint i = 0; i < 3; i++)
                     output.put_double(origin.get_element(i));
             }
         }
@@ -119,15 +119,24 @@ namespace AmlLammpsIo
             output.put_string(str);
         }
 
-        private void put_particles(OutputHelper output, Particles particles, unowned Float64PerParticleProperty[] props) throws ActionError
+        private void put_particles(OutputHelper output, Particles particles, string[] properties) throws ActionError
         {
-            int32 size_one = (int32) props.length;
+            int32 size_one = (int32) properties.length;
             int32 max_buff_size = 1024 * 32;
             int32 max_lines = (int32) (max_buff_size / (size_one * sizeof(double)));
             int32 max_n = size_one * max_lines;
             int32 particles_size = (int32) particles.get_size();
             int32 nchunk = particles_size / max_lines;
             if (nchunk * max_lines != particles_size) nchunk++;
+
+            var temp = new Float64Property.create();
+            var props = new ArrayProperty[properties.length];
+            var ps = new Property[properties.length];
+            for (uint i = 0; i < properties.length; i++)
+            {
+                props[i] = particles.get_prop(properties[i]);
+                ps[i] = props[i].get_type_object().create_property();
+            }
 
             uint index = 0;
 
@@ -138,7 +147,11 @@ namespace AmlLammpsIo
                 for (int32 j = 0; j < max_lines; j++)
                 {
                     for (int32 k = 0; k < size_one; k++)
-                        output.put_double(props[k].get_val(index));
+                    {
+                        props[k].get_property(index, ps[k]);
+                        temp.convert(ps[k]);
+                        output.put_double(temp.get_val());
+                    }
                     index++;
                 }
             }
@@ -149,27 +162,25 @@ namespace AmlLammpsIo
             for (int32 j = 0; j < last_size; j++)
             {
                 for (int32 k = 0; k < size_one; k++)
-                    output.put_double(props[k].get_val(index));
+                {
+                    props[k].get_property(index, ps[k]);
+                    temp.convert(ps[k]);
+                    output.put_double(temp.get_val());
+                }
                 index++;
             }
         }
 
-        private Float64PerParticleProperty[] get_float64_perparticle_properties(Particles particles, unowned string[] properties) throws ActionError
+        private void check_particles(Particles particles, string[] properties) throws ActionError
         {
-            Float64PerParticleProperty[] props = new Float64PerParticleProperty[properties.length];
-            if (particles != null)
+            for (uint i = 0; i < properties.length; i++)
             {
-                for (uint i = 0; i < props.length; i++)
-                {
-                    if (!particles.has_prop(properties[i]))
-                        throw new ActionError.LOGIC_ERROR(@"Particles does not contain property \"$(properties[i])\"");
-                    var precast = particles.get_prop(properties[i]);
-                    if (!(precast is ConvertableToString))
-                        throw new ActionError.LOGIC_ERROR(@"Element \"$(properties[i])\" is not instance of ConvertableToString");
-                    props[i] = ((ConvertableToFloat64) precast).convert_to_float64();
-                }
+                if (!particles.has_prop(properties[i]))
+                    throw new ActionError.RUNTIME_ERROR(@"Particles do not contain \"$(properties[i])\" property");
+                var prop = particles.get_prop(properties[i]);
+                if (!Float64Type.instance().can_convert(prop.get_type_object()))
+                    throw new ActionError.RUNTIME_ERROR(@"Cannot convert \"$(properties[i])\" property to float64");
             }
-            return props;
         }
 
         public override void perform(DataCollection data) throws ActionError
@@ -187,26 +198,25 @@ namespace AmlLammpsIo
             {
                 particles = data.get_dataobject<Particles>(params.get_particles_id());
                 if (particles == null)
-                    throw new ActionError.LOGIC_ERROR(@"Cannot load particles with id \"$(params.get_particles_id())\"");
+                    throw new ActionError.RUNTIME_ERROR(@"Cannot write particles with id \"$(params.get_particles_id())\"");
+                this.check_particles(particles, properties);
 
                 box = data.get_dataobject<ParallelepipedBox>(params.get_box_id());
                 if (box == null)
-                    throw new ActionError.LOGIC_ERROR(@"Cannot load box with id \"$(params.get_box_id())\"");
+                    throw new ActionError.RUNTIME_ERROR(@"Cannot write box with id \"$(params.get_box_id())\"");
 
-                time = data.get_dataobject<Float64>(params.get_time_id())?.get_val();
+                time = data.get_dataobject<Float64Property>(params.get_time_id())?.get_val();
 
-                timestep = data.get_dataobject<Int64>(params.get_timestep_id())?.get_val();
+                timestep = data.get_dataobject<Int64Property>(params.get_timestep_id())?.get_val();
                 if (timestep == null)
-                    throw new ActionError.LOGIC_ERROR(@"Cannot load timestep with id \"$(params.get_timestep_id())\"");
+                    throw new ActionError.RUNTIME_ERROR(@"Cannot write timestep with id \"$(params.get_timestep_id())\"");
 
-                units = data.get_dataobject<String>(params.get_units_id())?.get_val();
+                units = data.get_dataobject<StringProperty>(params.get_units_id())?.get_val();
             } catch (DataCollectionError.ELEMENT_ERROR e)
             {
-                throw new ActionError.LOGIC_ERROR(e.message);
+                throw new ActionError.RUNTIME_ERROR(e.message);
             }
 
-            Float64PerParticleProperty[] props = this.get_float64_perparticle_properties(particles, properties);
-                        
             OutputHelper output = new OutputHelper(params.get_filepath());
 
             this.put_timestep(output, timestep);
@@ -216,7 +226,7 @@ namespace AmlLammpsIo
             this.put_units(output, units);
             this.put_time(output, time);
             this.put_columns(output, properties);
-            this.put_particles(output, particles, props);
+            this.put_particles(output, particles, properties);
         }
     }
 }

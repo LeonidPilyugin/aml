@@ -27,7 +27,7 @@ if build_lib
     dependency('AmlCore'),
     dependency('AmlParticles'),
     dependency('AmlBox'),
-    dependency('AmlBasicTypes'),
+    dependency('AmlTypes'),
     dependency('AmlMath'),
   ]
 endif
