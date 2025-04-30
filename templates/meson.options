@@ -6,3 +6,4 @@ option('build-type', type: 'combo', choices: ['doc', 'lib', 'typelib', 'all'], v
   description: 'The build type. Option doc stands for only documentation generation, ' +
                'lib builds shared library, header, vapi and gir, typelib also builds typelib, ' +
                'all option also builds documentation')
+option('name-prefix', type: 'string', value: 'Aml')
