@@ -23,6 +23,15 @@ namespace AmlMath
             return result;
         }
 
+        public double norm()
+        {
+            return GLib.Math.sqrt(
+                this._data[0] * this._data[0] +
+                this._data[1] * this._data[1] +
+                this._data[2] * this._data[2]
+            );
+        }
+
         public static double scalar_product(Vector3 left, Vector3 right)
         {
             double res = 0.0;
