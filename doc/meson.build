@@ -33,5 +33,6 @@ custom_target(
     sources,
   ],
   output: 'index.html',
+  build_by_default: true,
   install: false,
 )

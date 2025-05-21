@@ -113,8 +113,6 @@ if build_typelib
     command: [
       g_ir_compiler,
       girdir_args,
-      '--shared-library',
-      lib.full_path(),
       '--output',
       '@OUTPUT@',
       meson.current_build_dir() / gir_name,
