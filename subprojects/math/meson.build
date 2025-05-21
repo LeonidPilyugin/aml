@@ -101,6 +101,7 @@ if build_typelib
     typelib_target_name,
     command: [
       g_ir_compiler,
+      '--shared-library=' + get_option('prefix') / get_option('libdir') / 'lib' + lib_name + '.so',
       girdir_args,
       '--output',
       '@OUTPUT@',
