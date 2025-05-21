@@ -33,6 +33,5 @@ custom_target(
     sources,
   ],
   output: 'index.html',
-  install: true,
-  install_dir: meson.current_build_dir(),
+  install: false,
 )

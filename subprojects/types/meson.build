@@ -23,7 +23,7 @@ thirdparty_dependencies = [
 if build_lib
   dependencies = thirdparty_dependencies
   dependencies += [
-    dependency('AmlCore'),
+    dependency('amlcore'),
   ]
 endif
 
@@ -52,17 +52,19 @@ include = include_directories('.')
 name_prefix = get_option('name-prefix')
 name = meson.project_name()
 version = meson.project_version()
-extless_name = name_prefix + name + '-' + version
+extless_name = name_prefix + name
+extless_v_name = extless_name + '-' + version
 lib_name = extless_name.to_lower()
-header_name = extless_name + '.h'
-vapi_name = extless_name + '.vapi'
-gir_name = extless_name + '.gir'
-build_dir = meson.current_build_dir()
-lib_dependency_name = name_prefix + name
-typelib_name = extless_name + '.typelib'
+header_name = extless_name.to_lower() + '.h'
+vapi_name = extless_name.to_lower() + '.vapi'
+gir_name = extless_v_name + '.gir'
+lib_dependency_name = extless_name.to_lower()
+typelib_name = extless_v_name + '.typelib'
 typelib_target_name = extless_name.to_lower() + '_typelib'
 
 if build_lib
+  pkgconfig = import('pkgconfig')
+
   lib = shared_library(
     lib_name,
     sources,
@@ -75,12 +77,16 @@ if build_lib
     install_dir: [ true, true, true, true ],
   )
 
+  pkgconfig.generate(
+    lib,
+  )
+
   dep = declare_dependency(
     link_with: lib,
     include_directories: include,
     version: version,
     dependencies: dependencies,
-    variables: { 'dir': build_dir },
+    variables: { 'dir': meson.current_build_dir() },
   )
   meson.override_dependency(lib_dependency_name, dep)
 endif
@@ -104,11 +110,13 @@ if build_typelib
       lib.full_path(),
       '--output',
       '@OUTPUT@',
-      build_dir / gir_name,
+      meson.current_build_dir() / gir_name,
     ],
     output: typelib_name,
     depends: lib,
     install: true,
-    install_dir: build_dir,
+    install_dir: '/usr/lib/girepository-1.0',
   )
 endif
+
+build_dir = meson.current_build_dir()
