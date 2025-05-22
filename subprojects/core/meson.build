@@ -110,7 +110,7 @@ if build_typelib
     output: typelib_name,
     depends: lib,
     install: true,
-    install_dir: '/usr/lib/girepository-1.0',
+    install_dir: get_option('prefix') / get_option('libdir') / 'girepository-1.0',
   )
 endif
 
