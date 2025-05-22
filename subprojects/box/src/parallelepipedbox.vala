@@ -44,9 +44,9 @@ namespace AmlBox
             edge.get_column(0, a);
             edge.get_column(1, b);
             edge.get_column(2, c);
-            Vector3.cross_product(a, b, c_);
-            Vector3.cross_product(b, c, a_);
-            Vector3.cross_product(c, a, b_);
+            c_ = Vector3.cross_product(a, b);
+            a_ = Vector3.cross_product(b, c);
+            b_ = Vector3.cross_product(c, a);
         }
 
         public Vector3 get_origin()
@@ -84,14 +84,14 @@ namespace AmlBox
         public override bool contains_point(Vector3 point)
         {
             Vector3 x = Vector3(), temp = Vector3();
-            Vector3.substract(point, origin, x);
+            x = Vector3.substract(point, origin);
             bool result = true;
             
-            Vector3.substract(x, c, temp);
+            temp = Vector3.substract(x, c);
             result &= Vector3.scalar_product(x, c_) * Vector3.scalar_product(temp, c_) < 0.0;
-            Vector3.substract(x, b, temp);
+            temp = Vector3.substract(x, b);
             result &= Vector3.scalar_product(x, b_) * Vector3.scalar_product(temp, b_) < 0.0;
-            Vector3.substract(x, a, temp);
+            temp = Vector3.substract(x, a);
             result &= Vector3.scalar_product(x, a_) * Vector3.scalar_product(temp, a_) < 0.0;
 
             return result;

@@ -81,8 +81,9 @@ namespace AmlMath
             return result;
         }
 
-        public static void multiply(Matrix3 left, Matrix3 right, Matrix3 result)
+        public static Matrix3 multiply(Matrix3 left, Matrix3 right)
         {
+            Matrix3 result = Matrix3();
             for (uint i = 0; i < 3; i++)
             {
                 for (uint j = 0; j < 3; j++)
@@ -94,10 +95,12 @@ namespace AmlMath
                     }
                 }
             }
+            return result;
         }
 
-        public static void multiply_right(Matrix3 left, Vector3 right, Vector3 result)
+        public static Vector3 multiply_right(Matrix3 left, Vector3 right)
         {
+            Vector3 result = Vector3();
             for (uint i = 0; i < 3; i++)
             {
                 result._data[i] = 0.0;
@@ -106,10 +109,12 @@ namespace AmlMath
                     result._data[i] += right._data[j] * left._data[j+i*3];
                 }
             }
+            return result;
         }
 
-        public static void multiply_left(Vector3 left, Matrix3 right, Vector3 result)
+        public static Vector3 multiply_left(Vector3 left, Matrix3 right)
         {
+            Vector3 result = Vector3();
             for (uint i = 0; i < 3; i++)
             {
                 result._data[i] = 0.0;
@@ -118,6 +123,8 @@ namespace AmlMath
                     result._data[i] += left._data[j] * right._data[i+j*3];
                 }
             }
+
+            return result;
         }
     }
 }

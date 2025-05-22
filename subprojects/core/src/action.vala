@@ -1,6 +1,6 @@
 namespace AmlCore
 {
-    public abstract class ActionParams
+    public abstract class ActionParams : Object
     {
         public abstract ActionParams copy();
     }
@@ -13,7 +13,7 @@ namespace AmlCore
         UNKNOWN_ERROR,
     }
 
-    public abstract class Action
+    public abstract class Action : Object
     {
         private ActionParams? params = null;
 

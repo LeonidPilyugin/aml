@@ -32,6 +32,12 @@ namespace AmlMath
             );
         }
 
+        public void set_with(Vector3 v)
+        {
+            for (uint i = 0; i < 3; i++)
+                this._data[i] = v._data[i];
+        }
+
         public static double scalar_product(Vector3 left, Vector3 right)
         {
             double res = 0.0;
@@ -40,11 +46,13 @@ namespace AmlMath
             return res;
         }
 
-        public static void cross_product(Vector3 left, Vector3 right, Vector3 result)
+        public static Vector3 cross_product(Vector3 left, Vector3 right)
         {
+            Vector3 result = Vector3();
             result._data[0] = left._data[1] * right._data[2] - left._data[2] * right._data[1];
             result._data[1] = left._data[2] * right._data[0] - left._data[0] * right._data[2];
             result._data[2] = left._data[0] * right._data[1] - left._data[1] * right._data[0];
+            return result;
         }
 
         public static void product(Vector3 left, Vector3 right, Vector3 result)
@@ -56,16 +64,16 @@ namespace AmlMath
         public static double volume(Vector3 first, Vector3 second, Vector3 third)
         {
             Vector3 temp = Vector3();
-            Vector3.cross_product(second, third, temp);
+            temp = Vector3.cross_product(second, third);
             return Vector3.scalar_product(first, temp);
         }
 
-        public static void substract(Vector3 left, Vector3 right, Vector3 result)
+        public static Vector3 substract(Vector3 left, Vector3 right)
         {
+            Vector3 result = Vector3();
             for (uint i = 0; i < 3; i++)
-            {
                 result._data[i] = left._data[i] - right._data[i];
-            }
+            return result;
         }
     }
 }
