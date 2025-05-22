@@ -69,6 +69,7 @@ if build_lib
     vala_gir: gir_name,
     version: version,
     dependencies: dependencies,
+    link_args: '-lm',
     install: true,
     install_dir: [ true, true, true, true ],
   )
